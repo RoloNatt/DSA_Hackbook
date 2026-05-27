@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react';
 // If you use a custom domain, change this to "/"
 export default defineConfig({
   plugins: [react()],
-  base: '/dsa-cheat-sheet/',
+  base: '/DSA_Hackbook/',
 });
