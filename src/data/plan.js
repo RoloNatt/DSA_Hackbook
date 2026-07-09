@@ -1,0 +1,128 @@
+// ─── 7-DAY GOOGLE CRASH PLAN ────────────────────────────────────────────────
+// Built for: 2 DSA rounds + 1 AI/ML domain round, one week out, Python.
+// Daily shape: ~1h concepts (this app) + ~3h problems + ~30min review.
+// Problems ordered easy→hard within each day; names are LeetCode titles.
+
+export const PLAN = [
+  {
+    day: 1, title: "Arrays, Hashing & Windows", freq: "≈35% of Google questions",
+    color: "#1A6BCC", bg: "#E8F1FB",
+    focus: ["HashMap / Set", "Two Pointers", "Sliding Window", "Prefix Sum"],
+    concepts: "Read the Learn cards for HashMap, Two Pointers, Sliding Window, Prefix Sum. Then the Big-O tab — memorize the constraints→complexity table; you'll use it in every round to guess the intended solution.",
+    problems: [
+      { name: "Two Sum", lc: 1, diff: "Easy", why: "warm-up; the complement-in-dict reflex" },
+      { name: "Group Anagrams", lc: 49, diff: "Med", why: "hashing with a derived key" },
+      { name: "Longest Substring Without Repeating Characters", lc: 3, diff: "Med", why: "THE Google window" },
+      { name: "Subarray Sum Equals K", lc: 560, diff: "Med", why: "prefix+hashmap; know why window fails" },
+      { name: "3Sum", lc: 15, diff: "Med", why: "sort + two pointers + duplicate skipping" },
+      { name: "Minimum Window Substring", lc: 76, diff: "Hard", why: "min-window template, Google favorite" },
+      { name: "Trapping Rain Water", lc: 42, diff: "Hard", why: "stretch: two-pointer elegance" },
+    ],
+    evening: "Re-code today's window template from memory in a PLAIN text file (no IDE). Struggling = learning.",
+  },
+  {
+    day: 2, title: "Trees, BST & Tries", freq: "core of the ~25% trees/graphs block",
+    color: "#33691E", bg: "#F1F8E9",
+    focus: ["Trees & BST", "Trie"],
+    concepts: "Learn cards: Trees & BST, Trie. Internalize the recursion shape: base case → recurse children → combine. Say 'inorder = sorted' out loud.",
+    problems: [
+      { name: "Maximum Depth of Binary Tree", lc: 104, diff: "Easy", why: "the canonical recursion shape" },
+      { name: "Binary Tree Level Order Traversal", lc: 102, diff: "Med", why: "one-level-per-pass BFS loop" },
+      { name: "Validate Binary Search Tree", lc: 98, diff: "Med", why: "bounds-passing; classic Google trap" },
+      { name: "Lowest Common Ancestor of a Binary Tree", lc: 236, diff: "Med", why: "Google classic" },
+      { name: "Binary Tree Right Side View", lc: 199, diff: "Med", why: "level-order variant they love" },
+      { name: "Implement Trie", lc: 208, diff: "Med", why: "write the structure from scratch" },
+      { name: "Serialize and Deserialize Binary Tree", lc: 297, diff: "Hard", why: "top-reported Google hard" },
+      { name: "Binary Tree Maximum Path Sum", lc: 124, diff: "Hard", why: "return-vs-record distinction" },
+    ],
+    evening: "Re-code: level order + validate BST from memory. 15 min: skim ML fundamentals section (Google tab).",
+  },
+  {
+    day: 3, title: "Graphs: BFS, DFS, Grids, Topo, Union-Find", freq: "Google's most-reported family",
+    color: "#0277BD", bg: "#E1F5FE",
+    focus: ["BFS", "DFS", "Topological Sort", "Union-Find", "Dijkstra's"],
+    concepts: "Learn cards: BFS, DFS, Topo Sort, Union-Find, Dijkstra. Drill the grid habits: DIRS list, bounds check, mark-visited-on-enqueue, multi-source seeding.",
+    problems: [
+      { name: "Number of Islands", lc: 200, diff: "Med", why: "THE Google problem — do it twice (DFS & BFS)" },
+      { name: "Rotting Oranges", lc: 994, diff: "Med", why: "multi-source BFS with levels" },
+      { name: "Course Schedule II", lc: 210, diff: "Med", why: "Kahn's + cycle detection" },
+      { name: "Clone Graph", lc: 133, diff: "Med", why: "hashmap + traversal together" },
+      { name: "Accounts Merge", lc: 721, diff: "Med", why: "union-find in the wild" },
+      { name: "Word Ladder", lc: 127, diff: "Hard", why: "BFS on an implicit graph" },
+      { name: "Network Delay Time", lc: 743, diff: "Med", why: "clean Dijkstra rep" },
+      { name: "Swim in Rising Water", lc: 778, diff: "Hard", why: "stretch: Dijkstra/binary-search on a grid" },
+    ],
+    evening: "Re-code: grid BFS + Kahn's topo from memory. They must be automatic by tonight.",
+  },
+  {
+    day: 4, title: "Dynamic Programming & Backtracking", freq: "≈15% + the 'generate all' genre",
+    color: "#6A1B9A", bg: "#F3E5F5",
+    focus: ["Dynamic Programming", "Backtracking"],
+    concepts: "Learn card: DP. For every problem today, SAY the three words before coding: state, transition, base case. Then Backtracking: choose → explore → un-choose, append path[:].",
+    problems: [
+      { name: "Climbing Stairs", lc: 70, diff: "Easy", why: "gateway DP — feel the recurrence" },
+      { name: "House Robber", lc: 198, diff: "Med", why: "take/skip state pair" },
+      { name: "Coin Change", lc: 322, diff: "Med", why: "canonical Google DP; greedy counter-example" },
+      { name: "Word Break", lc: 139, diff: "Med", why: "top-reported Google DP" },
+      { name: "Longest Increasing Subsequence", lc: 300, diff: "Med", why: "do O(n²) THEN O(n log n)" },
+      { name: "Unique Paths", lc: 62, diff: "Med", why: "grid DP + rolling row" },
+      { name: "Subsets", lc: 78, diff: "Med", why: "backtracking skeleton" },
+      { name: "Generate Parentheses", lc: 22, diff: "Med", why: "constraint pruning" },
+      { name: "Word Search", lc: 79, diff: "Med", why: "grid backtracking with unmark" },
+      { name: "Edit Distance", lc: 72, diff: "Hard", why: "stretch: 2D DP Google favorite" },
+    ],
+    evening: "Write the DP recipe (state/transition/base) for 3 solved problems in one sentence each, from memory.",
+  },
+  {
+    day: 5, title: "Binary Search, Heaps, Intervals, Lists & Design", freq: "the remaining ~25%, incl. Google signatures",
+    color: "#C62828", bg: "#FDECEA",
+    focus: ["Binary Search", "Heap / Top-K", "Intervals", "Linked List", "Design a DS"],
+    concepts: "Learn cards: Binary Search (especially search-on-answer — a Google signature), Heap, Intervals, Linked List, Design. The design card's 'menu' (lookup→dict, order→DLL, rank→heap) is the cheat code.",
+    problems: [
+      { name: "Search in Rotated Sorted Array", lc: 33, diff: "Med", why: "binary search with a twist" },
+      { name: "Koko Eating Bananas", lc: 875, diff: "Med", why: "binary-search-on-answer signature" },
+      { name: "Merge Intervals", lc: 56, diff: "Med", why: "must-know interval move" },
+      { name: "Meeting Rooms II", lc: 253, diff: "Med", why: "heap of end times; Google perennial" },
+      { name: "Top K Frequent Elements", lc: 347, diff: "Med", why: "Counter + heap" },
+      { name: "Merge k Sorted Lists", lc: 23, diff: "Hard", why: "heap of heads" },
+      { name: "Reverse Linked List", lc: 206, diff: "Easy", why: "must be automatic — it's a building block" },
+      { name: "Linked List Cycle II", lc: 142, diff: "Med", why: "fast/slow + the reset trick" },
+      { name: "LRU Cache", lc: 146, diff: "Med", why: "top-reported Google design" },
+      { name: "Insert Delete GetRandom O(1)", lc: 380, diff: "Med", why: "swap-with-last deletion idea" },
+    ],
+    evening: "Re-code from memory: left_bound binary search + LRU (OrderedDict version). 20 min ML review.",
+  },
+  {
+    day: 6, title: "Mock Interview Day", freq: "convert knowledge into performance",
+    color: "#B84A00", bg: "#FCEEE7",
+    focus: ["45-min protocol", "Ambiguity handling", "Talking while coding"],
+    concepts: "Morning: read the Google tab fully — rubric, style, protocol. Your problems today are UNSEEN and TIMED (45 min each, phone timer), coded in a bare Google Doc, narrating out loud to an empty room (or a friend/mock platform). This feels ridiculous. Do it anyway — it's the single highest-value day.",
+    problems: [
+      { name: "Mock 1 — unseen medium from the Google list (pick blind)", diff: "Med", why: "full protocol: clarify → plan → code → verify" },
+      { name: "Mock 2 — unseen medium-hard (different pattern than Mock 1)", diff: "Med/Hard", why: "practice recovering when stuck: narrate the dead end" },
+      { name: "Mock 3 — a design one (Time-Based KV Store, LC 981)", diff: "Med", why: "the compose-structures interview flavor" },
+      { name: "Review: every problem you failed this week — re-solve cold", diff: "—", why: "failure review beats new problems on day 6" },
+    ],
+    evening: "Write your own scorecard per mock using the 4-axis rubric. Weakest axis gets 30 extra minutes tomorrow.",
+  },
+  {
+    day: 7, title: "ML Domain + Light Review + Rest", freq: "your 3rd interview + consolidation",
+    color: "#0F7A5A", bg: "#E2F5EF",
+    focus: ["AI/ML domain round", "Template recall", "Sleep"],
+    concepts: "Morning (2–3h): the full ML Domain section in the Google tab. Rehearse your two project deep-dives OUT LOUD (90 seconds each + follow-up answers). Write the attention formula and the RAG-vs-fine-tuning decision once by hand.",
+    problems: [
+      { name: "Flash review: redo 5 Python templates from memory (BFS-grid, topo, window, DP, binary-search-on-answer)", diff: "—", why: "recall, not learning" },
+      { name: "Skim the Identify tab top to bottom once", diff: "—", why: "pattern-naming speed is your edge" },
+      { name: "One easy confidence problem (e.g. Merge Two Sorted Lists, LC 21)", diff: "Easy", why: "end on a win" },
+    ],
+    evening: "Prepare interview logistics + 2 questions to ask each interviewer. NO new problems after lunch. Sleep 8 hours — a rested brain outperforms a crammed one on ambiguous problems.",
+  },
+];
+
+export const PLAN_RULES = [
+  "Struggle 20–25 minutes before reading a solution — then re-code it from scratch WITHOUT looking. Reading ≠ learning.",
+  "Talk out loud from Day 1, even alone. Interview performance is a speaking skill, not just a thinking skill.",
+  "Code in a plain doc / bare editor. No autocomplete, no linting, no running — match interview conditions.",
+  "After every solve, say the complexity and one alternative approach — that's the follow-up Google will ask.",
+  "Keep a mistake journal: one line per bug ('forgot visited-on-enqueue'). Read it each morning — bugs repeat.",
+];
