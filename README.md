@@ -1,10 +1,12 @@
 # DSA Hackbook — Google SWE III Interview Prep
 
-A comprehensive, interactive algorithm & data structure reference built for **1-week crash preparation** for Google Software Engineer III (L4) interviews. 23 patterns, 45 Google problems, AI/ML domain coverage, and a 7-day study plan.
+A comprehensive, interactive study reference built for **1-week crash preparation** for Google Software Engineer III (L4) interviews — covering both the **DSA rounds** and the **AI/ML domain round**.
+
+23 DSA patterns · 45 most-asked Google problems · a full AI/ML domain curriculum with interactive labs · 7 specialization tracks · 130+ interview questions · a 7-day plan for each half.
 
 **🚀 Live:** [https://rolonatt.github.io/DSA_Hackbook/](https://rolonatt.github.io/DSA_Hackbook/)
 
-## 8 Core Tabs
+## 9 Core Tabs
 
 ### 🔍 **Identify the Algorithm**
 Pattern-recognition rules: scan problem statements for signal keywords, map to the right algorithm. Every rule tagged with Google frequency (⭐⭐⭐ = core, ⭐⭐ = common, ⭐ = occasional).
@@ -78,14 +80,44 @@ Day-by-day study schedule (1 week until interview):
 - Day 7: ML domain review + light practice + rest
 - **Checkboxes save automatically** to localStorage
 
+---
+
+### 🤖 **AI/ML Domain Round** — 11 sub-sections
+
+A complete curriculum for the ML domain interview, with interactive labs.
+
+**📋 Round Playbook** — what the 45 minutes actually contains, the 4-axis scoring rubric, the answer *shapes* that score (including the honest-edge script), a red-flag vs green-flag table, the 9-step ML system design framework, project-defense archetypes with their probe questions, and what to ask them.
+
+**🎯 The Core 10** — the exact topics named for the round, each with intuition → mechanics & math → runnable code → when/why/vs → questions laddered easy to hard:
+supervised/unsupervised · bias-variance · overfitting · "practical and theory" · linear regression · logistic regression · decision trees · SVMs · CNNs · RNNs/LSTM
+
+**🧱 Foundations** — the terminology trap (why "bias" means three different things), the math you actually need, gradient descent with a **learning-rate visualizer**, loss functions, splits/CV variants, the four kinds of data leakage, the regularization toolbox, optimizers, normalization, and the master debugging table.
+
+**📊 Metrics Lab** — built from zero in the right order, with a fully **interactive threshold explorer**: drag the threshold and watch the confusion matrix, TPR/FPR/precision/F1, and the point on the ROC curve all move together. Then ROC vs PR-AUC on imbalanced data, with the mechanism.
+
+**🎯 Bias–Variance Lab** — the four-quadrant **dartboard diagram**, an **interactive polynomial-degree slider** driven by real measured bias²/variance numbers (watch degree 9 explode to variance 160), the complexity curve, learning curves, and double descent.
+
+**🗂️ Algorithm Zoo** — Random Forest, boosting, kNN, k-means, DBSCAN, PCA, Naive Bayes, plus bagging-vs-boosting, algorithm selection, and classical-vs-deep comparison tables.
+
+**🧠 Deep Learning** — neuron → network (with the algebraic proof that activations are mandatory), **interactive activation-function plots**, backprop worked by hand with real numbers, vanishing gradients, initialization, an **attention formula walkthrough** you click through step by step, multi-head, positional encodings, and an **LSTM gate diagram**.
+
+**🚀 Specializations** — all 7 tracks, pick one: Applied ML · Computer Vision · NLP · **Generative AI** (the deepest: LLM internals, KV cache, decoding, structured output, prompt injection, RAG in full with a **pipeline diagram**, the RAG failure-mode diagnostic table, evaluation, agents, MCP, production) · Recommendations/Ranking · Reinforcement Learning · Speech & Audio.
+
+**❓ Question Bank** — 130+ questions filterable by section and difficulty, in flashcard mode. Plus **depth probes** that show what the interviewer is *really* testing and the follow-up that comes next.
+
+**💻 ML Coding** — 14 NumPy/PyTorch implementations: softmax + cross-entropy, logistic regression, 2-layer NN forward+backward, k-means, scaled dot-product attention, metrics from scratch, ROC/AUC, IoU + NMS, cosine top-k, NDCG, the bias-variance demo, leakage-safe pipelines, and a **conv shape calculator**.
+
+**🗓️ Study Plan** — a 7-day ML schedule with morning/evening/drill splits, plus a **57-item self-test** with progress tracking that saves automatically.
+
 ## Key Features
 
 ✅ **Google-centric:** Every algorithm tagged with frequency (⭐⭐⭐ most common at Google)  
 ✅ **Pattern-first:** Learn to NAME the pattern before coding  
 ✅ **Analogy-driven:** Intuitive stories before formulas  
 ✅ **Copy-paste Python:** All 26 templates work standalone, no boilerplate  
-✅ **Interactive:** Decision tree, tab navigation, localStorage persistence  
-✅ **One-week ready:** Structured 7-day plan with specific problems  
+✅ **Interactive:** Decision tree, threshold explorer, bias-variance slider, conv calculator, attention walkthrough, flashcards, progress tracking  
+✅ **Say-it-out-loud prompts:** Every ML topic ends with what to rehearse aloud — recognition ≠ recall  
+✅ **One-week ready:** Structured 7-day plans for both the DSA and ML halves  
 ✅ **No external deps:** React 18 + Vite, pure inline CSS — instant load  
 
 ## Tech Stack
@@ -93,8 +125,9 @@ Day-by-day study schedule (1 week until interview):
 - **React 18** — component state, hooks
 - **Vite 5** — blazing fast dev/build
 - **No external UI libraries** — all inline styles for zero bloat
-- **localStorage** — persists 7-day plan progress
-- **Modular data** — `src/data/*.js` (algos, snippets, google intel, plan, etc.)
+- **localStorage** — persists 7-day plan progress and the ML self-test
+- **Modular data** — `src/data/*.js` (DSA: algos, snippets, google intel, plan) and `src/data/ml/*.js` (ML: playbook, core topics, foundations, metrics, algorithms, deep learning, specializations, questions, code, plan)
+- **Custom SVG widgets** — `src/components/MLWidgets.jsx`, no charting library
 
 ## Quick Start
 
@@ -118,19 +151,31 @@ npm run build
 3. **Pick the algorithm** → **Learn tab** (read the analogy + steps + pitfalls)
 4. **See the Python code** → **Python Code tab** (copy-paste, adapt)
 5. **Study this week?** → **7-Day Plan tab** (check off problems as you go)
-6. **Interview is AI/ML focused?** → **Google Prep tab → AI/ML domain round** (study fundamentals, your project)
-7. **Need Big-O intuition?** → **Big-O & Constraints tab** (know what Python ops cost)
+6. **Need Big-O intuition?** → **Big-O & Constraints tab** (know what Python ops cost)
+7. **AI/ML domain round?** → **AI/ML Domain tab** (start with Round Playbook, then The Core 10)
 
-## For Google L4 Interviews Specifically
+## For the DSA Rounds
 
-- Read **Google Prep** section completely (format, rubric, protocol, top 45 problems)
-- Focus on high-Google-frequency algorithms (filter by ⭐⭐⭐ in Learn tab)
-- Study the **7-Day Plan** — it's built around Google's actual problem distribution
-- Practice the **45-minute protocol** on day 6 (mock interviews with unseen problems)
-- For the AI/ML domain round: dive into **Google Prep → AI/ML domain round**, prep 2 project stories
+- Read **Google Prep** completely (format, rubric, 45-minute protocol, top 45 problems)
+- Focus on high-frequency patterns (filter by ⭐⭐⭐ in the Learn tab)
+- Follow the **7-Day Plan** — it's built around Google's actual problem distribution
+- Practice the 45-minute protocol on day 6 with unseen problems
 
-## Feedback & Improvements
+## For the AI/ML Domain Round
 
-This guide is based on 250+ Google interview reports (candidate write-ups, LeetCode Discuss, interview platforms). If you spot missing patterns, incorrect complexity notes, or problem updates — feedback welcome.
+1. **Round Playbook** first — know what's being scored before you study content
+2. **The Core 10** — these are the exact topics named for the round. Bias-variance, overfitting and logistic regression are the most-probed
+3. **Metrics Lab** — drag the threshold slider until precision/recall/TPR/FPR are automatic
+4. **Pick ONE specialization** — where you can survive four layers of follow-ups, not what sounds impressive
+5. **Question Bank** as a diagnostic — answer *before* revealing, and note which ones you couldn't produce
+6. **Study Plan** — the 57-item self-test is the honest readiness measure
+
+> The single rule that determines whether this works: after each topic, close the page and **say the answer out loud**. Reading and nodding is recognition. The interview tests recall, and the gap between the two is where prepared-feeling candidates fail.
+
+## Sources
+
+The DSA half draws on 250+ published Google interview reports (candidate write-ups, LeetCode Discuss, interview platforms). The ML half consolidates a full domain-round curriculum with verified code output — every numeric example (bias-variance decomposition, ROC sweep, conv arithmetic, ROC-AUC vs PR-AUC on imbalanced data) was run and checked.
+
+If you spot missing patterns, incorrect complexity notes, or problem updates — feedback welcome.
 
 **Good luck on the interview! 🚀**

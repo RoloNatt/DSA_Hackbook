@@ -9,6 +9,7 @@ import {
 } from "./src/data/google.js";
 import { PLAN, PLAN_RULES } from "./src/data/plan.js";
 import { CONSTRAINT_TABLE, PYTHON_COSTS, COMPLEXITY_NOTES } from "./src/data/bigo.js";
+import MLSection from "./src/components/MLSection.jsx";
 
 // ─── SHARED UI ──────────────────────────────────────────────────────────────
 
@@ -115,6 +116,7 @@ export default function App() {
     ["code", "🐍 Python Code"],
     ["bigo", "⚖️ Big-O & Constraints"],
     ["google", "🎯 Google Prep"],
+    ["ml", "🤖 AI/ML Domain"],
     ["plan", "🗓️ 7-Day Plan"],
   ];
 
@@ -672,6 +674,9 @@ export default function App() {
           )}
         </div>
       )}
+
+      {/* ══ TAB: AI/ML DOMAIN ══ */}
+      {mainTab === "ml" && <MLSection />}
 
       {/* ══ TAB: 7-DAY PLAN ══ */}
       {mainTab === "plan" && (
