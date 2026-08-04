@@ -1,12 +1,12 @@
 # DSA Hackbook — Interview Prep Reference
 
-A comprehensive, interactive study reference built for **1-week crash preparation** for technical interviews — covering both **DSA rounds** and an **AI/ML domain round**.
+A comprehensive, interactive study reference for technical interviews — covering **DSA rounds**, an **AI/ML domain round**, and **system design**.
 
-23 DSA patterns · a curated set of most-asked problems tagged by pattern · a full AI/ML domain curriculum with interactive labs · 7 specialization tracks · 130+ interview questions · a 7-day plan for each half.
+23 DSA patterns · a curated set of most-asked problems tagged by pattern · a full AI/ML domain curriculum with interactive labs · 7 specialization tracks · a system design curriculum with worked case studies · 130+ interview questions · structured study plans.
 
 **🚀 Live:** [https://rolonatt.github.io/DSA_Hackbook/](https://rolonatt.github.io/DSA_Hackbook/)
 
-## 9 Core Tabs
+## 10 Core Tabs
 
 ### 🔍 **Identify the Algorithm**
 Pattern-recognition rules: scan problem statements for signal keywords, map to the right algorithm. Every rule tagged with interview frequency (⭐⭐⭐ = core, ⭐⭐ = common, ⭐ = occasional).
@@ -109,13 +109,39 @@ supervised/unsupervised · bias-variance · overfitting · "practical and theory
 
 **🗓️ Study Plan** — a 7-day ML schedule with morning/evening/drill splits, plus a **57-item self-test** with progress tracking that saves automatically.
 
+---
+
+### 🏗️ **System Design** — 10 sub-sections
+
+The open-ended round: you're handed a vague problem and scored on how you turn it into a design.
+
+**📐 The Framework** — the seven phases with timings (clarify → estimate → API/data → high-level → deep dive → failure → wrap), a functional/non-functional requirements checklist, the anti-patterns that cost you the round, and the scoring axes with the senior signals to say unprompted.
+
+**🔢 Estimation** — an **interactive sizing calculator**: set users, actions, record size, retention and read:write ratio, and it computes QPS, storage and — crucially — the *decisions those numbers force* ("1.7K peak writes/sec fits one primary, don't shard yet"). Plus data sizes, powers of two, single-machine capacity, a **log-scale latency visualization** from L1 cache to cross-continent, and the availability/nines table.
+
+**🧱 Building Blocks** — load balancers, caches, queues vs logs, databases, CDNs, API gateways, search indexes, object storage. Each with the requirement that justifies it, how it works, what it costs you, and its failure modes (thundering herd, cache penetration, cold-cache stampede).
+
+**🗄️ Data & Distributed** — SQL vs NoSQL as a decision rather than a religion, indexing, sharding strategies and choosing a partition key, replication, CAP/PACELC and consistency models, plus idempotency, exactly-once, consensus, sagas, rate-limiting algorithms, and backpressure/circuit breakers.
+
+**🤖 Production AI** — the seven-layer agent architecture (ingress/routing → context assembly → bounded control loop → tool execution → output validation → escalation → observability) and the design decisions you'll be pushed on: sync vs async, cost control, multi-tenancy, containing prompt injection, evaluating non-deterministic systems, and what "reliable" means when 0.95¹⁰ ≈ 0.60.
+
+**🔌 Integrations** — API/transport styles, push vs pull, batch vs streaming (CDC, outbox pattern), enterprise auth (OAuth, mTLS, SAML, SCIM), defensive integration with systems you don't control, and the legacy-system reality from documented APIs down to screen scraping.
+
+**🛡️ Reliability & Ops** — SLI/SLO/SLA and error budgets, the observability pillars plus high-cardinality events, the four golden signals, nine named failure modes with mitigations, graceful degradation, deployment strategies and expand-contract migrations, and incident response.
+
+**📋 Case Studies** — six fully worked designs following the same seven sections, mixing classic and AI-native: an agent that resolves support tickets, a document processing pipeline, a distributed rate limiter, a workflow orchestration engine, a notification system, and a multi-tenant AI platform. Each includes a genuine deep dive (the authorization boundary; why validation not the model is where reliability comes from; durable execution semantics).
+
+**🎯 Scoping & Discovery** — turning an ambiguous real-world problem into something shippable: a six-phase discovery framework with the actual questions to ask and what to watch for, plus worked answers to "a team spends 20 hours a week on X — what do you do?" and "the customer asks for X but needs Y."
+
+**💬 Behavioural** — STAR structure and its two most common failure modes, the seven stories worth preparing (ownership, ambiguity, stakeholder conflict, a real failure, choosing the simpler thing, influence without authority, operating in production), what each question is actually testing, and questions worth asking back.
+
 ## Key Features
 
 ✅ **Frequency-ranked:** Every algorithm tagged with how often it actually shows up in interviews (⭐⭐⭐ = most common)  
 ✅ **Pattern-first:** Learn to NAME the pattern before coding  
 ✅ **Analogy-driven:** Intuitive stories before formulas  
 ✅ **Copy-paste Python:** All 26 templates work standalone, no boilerplate  
-✅ **Interactive:** Decision tree, threshold explorer, bias-variance slider, conv calculator, attention walkthrough, flashcards, progress tracking  
+✅ **Interactive:** Decision tree, threshold explorer, bias-variance slider, conv calculator, attention walkthrough, system-sizing calculator, flashcards, progress tracking  
 ✅ **Say-it-out-loud prompts:** Every ML topic ends with what to rehearse aloud — recognition ≠ recall  
 ✅ **One-week ready:** Structured 7-day plans for both the DSA and ML halves  
 ✅ **No external deps:** React 18 + Vite, pure inline CSS — instant load  
@@ -126,7 +152,7 @@ supervised/unsupervised · bias-variance · overfitting · "practical and theory
 - **Vite 5** — blazing fast dev/build
 - **No external UI libraries** — all inline styles for zero bloat
 - **localStorage** — persists 7-day plan progress and the ML self-test
-- **Modular data** — `src/data/*.js` (DSA: algos, snippets, interview intel, plan) and `src/data/ml/*.js` (ML: playbook, core topics, foundations, metrics, algorithms, deep learning, specializations, questions, code, plan)
+- **Modular data** — `src/data/*.js` (DSA), `src/data/ml/*.js` (ML curriculum), `src/data/sd/*.js` (system design)
 - **Custom SVG widgets** — `src/components/MLWidgets.jsx`, no charting library
 
 ## Quick Start
@@ -153,6 +179,7 @@ npm run build
 5. **Study this week?** → **7-Day Plan tab** (check off problems as you go)
 6. **Need Big-O intuition?** → **Big-O & Constraints tab** (know what Python ops cost)
 7. **AI/ML domain round?** → **AI/ML Domain tab** (start with Round Playbook, then The Core 10)
+8. **System design round?** → **System Design tab** (start with The Framework, then read one Case Study end to end)
 
 ## For the DSA Rounds
 
@@ -171,6 +198,15 @@ npm run build
 6. **Study Plan** — the 57-item self-test is the honest readiness measure
 
 > The single rule that determines whether this works: after each topic, close the page and **say the answer out loud**. Reading and nodding is recognition. The interview tests recall, and the gap between the two is where prepared-feeling candidates fail.
+
+## For the System Design Round
+
+1. **The Framework** first — internalize the seven phases and their timings. Structure is most of the score
+2. **Estimation** — play with the sizing calculator until the "so what" reasoning is automatic. An unused calculation is wasted minutes
+3. **Building Blocks** — for each component, be able to name the requirement that justifies it and what it costs
+4. **Read ONE case study end to end**, then take a different prompt and produce the same seven sections yourself, out loud, timed at 45 minutes
+5. **Production AI** if the role involves shipping agents — it's where conventional system design and AI intersect, and where most candidates are thinnest
+6. **Scoping & Discovery** if the role is customer-facing — turning a vague complaint into a bounded, measurable scope is a distinct skill that gets probed directly
 
 ## Sources
 
