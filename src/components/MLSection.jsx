@@ -16,22 +16,10 @@ import { PICKING_ADVICE, SPECIALIZATIONS } from "../data/ml/specializations.js";
 import { BANK_ADVICE, SECTIONS, QUESTIONS, DEPTH_PROBES } from "../data/ml/questions.js";
 import { CODE_INTRO, ML_SNIPPETS, ML_CODE_CATEGORIES, ALSO_DRILL } from "../data/ml/code.js";
 import { PLAN_RULE, ALLOCATION, DAYS, COMPRESSED, SELF_TEST, SELF_TEST_TARGET, LAST_DAYS, THREE_THINGS } from "../data/ml/plan.js";
+import { ML_STAGES } from "../data/paths.js";
+import { StageNav, PathFooter } from "./PathNav.jsx";
 
 const BLUE = "#1A73E8";
-
-const SUBTABS = [
-  ["playbook", "📋 Round Playbook"],
-  ["core", "🎯 The Core 10"],
-  ["foundations", "🧱 Foundations"],
-  ["metrics", "📊 Metrics Lab"],
-  ["biasvar", "🎯 Bias–Variance Lab"],
-  ["zoo", "🗂️ Algorithm Zoo"],
-  ["deep", "🧠 Deep Learning"],
-  ["spec", "🚀 Specializations"],
-  ["bank", "❓ Question Bank"],
-  ["code", "💻 ML Coding"],
-  ["plan", "🗓️ Study Plan"],
-];
 
 function SectionTitle({ children, sub }) {
   return (
@@ -42,8 +30,7 @@ function SectionTitle({ children, sub }) {
   );
 }
 
-export default function MLSection() {
-  const [tab, setTab] = useState("playbook");
+export default function MLSection({ tab, setTab }) {
   const [activeTopic, setActiveTopic] = useState("supervised");
   const [activeSpec, setActiveSpec] = useState("genai");
   const [activeCode, setActiveCode] = useState("softmax");
@@ -81,18 +68,8 @@ export default function MLSection() {
         </p>
       </div>
 
-      {/* Sub-tabs */}
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: "1.4rem" }}>
-        {SUBTABS.map(([id, label]) => (
-          <button key={id} onClick={() => setTab(id)} style={{
-            padding: "7px 13px", borderRadius: 8, cursor: "pointer", fontSize: 12.5,
-            fontFamily: "var(--font-sans)", fontWeight: tab === id ? 600 : 400,
-            border: `1.5px solid ${tab === id ? BLUE : C.border2}`,
-            background: tab === id ? "#E8F0FE" : C.bg,
-            color: tab === id ? BLUE : C.sub, whiteSpace: "nowrap",
-          }}>{label}</button>
-        ))}
-      </div>
+      {/* Reading path */}
+      <StageNav stages={ML_STAGES} tab={tab} setTab={setTab} accent={BLUE} />
 
       {/* ══ PLAYBOOK ══ */}
       {tab === "playbook" && (
@@ -1233,6 +1210,8 @@ export default function MLSection() {
           <Callout tone="good">{THREE_THINGS.closing}</Callout>
         </div>
       )}
+
+      <PathFooter stages={ML_STAGES} tab={tab} setTab={setTab} accent={BLUE} />
     </div>
   );
 }

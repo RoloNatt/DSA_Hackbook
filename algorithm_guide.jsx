@@ -11,6 +11,8 @@ import { PLAN, PLAN_RULES } from "./src/data/plan.js";
 import { CONSTRAINT_TABLE, PYTHON_COSTS, COMPLEXITY_NOTES } from "./src/data/bigo.js";
 import MLSection from "./src/components/MLSection.jsx";
 import SDSection from "./src/components/SDSection.jsx";
+import { TRACKS, DSA_STAGES, LOOP_STAGES, STAGES_BY_TRACK, START } from "./src/data/paths.js";
+import { StageNav, PathFooter } from "./src/components/PathNav.jsx";
 
 // ─── SHARED UI ──────────────────────────────────────────────────────────────
 
@@ -46,7 +48,11 @@ const diffColor = (d) =>
 // ─── MAIN APP ───────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [mainTab, setMainTab] = useState("identify");
+  const [track, setTrack] = useState("start");
+  const [dsaTab, setDsaTab] = useState("identify");
+  const [mlTab, setMlTab] = useState("playbook");
+  const [sdTab, setSdTab] = useState("framework");
+  const [loopTab, setLoopTab] = useState("google");
   const [activeCode, setActiveCode] = useState("hashmap");
   const [activeAlgo, setActiveAlgo] = useState("hashmap");
   const [googleFocus, setGoogleFocus] = useState(false);
@@ -58,6 +64,11 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem("dsa-plan-checks")) || {}; }
     catch { return {}; }
   });
+
+  // Track + section guards. Every render block below asks "am I the visible
+  // section of the visible track?" so ordering lives entirely in paths.js.
+  const dsa = (t) => track === "dsa" && dsaTab === t;
+  const loop = (t) => track === "loop" && loopTab === t;
 
   const algo = ALGOS.find(a => a.id === activeAlgo);
   const step = DECISION_STEPS.find(s => s.id === decisionStep);
@@ -84,18 +95,21 @@ export default function App() {
   function openLearn(algoId) {
     if (ALGOS.some(a => a.id === algoId)) {
       setActiveAlgo(algoId);
-      setMainTab("learn");
+      setTrack("dsa");
+      setDsaTab("learn");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
-  const tabStyle = (t) => ({
-    padding: "9px 14px", border: "none", background: "transparent", cursor: "pointer",
-    fontSize: 13.5, whiteSpace: "nowrap",
-    fontWeight: mainTab === t ? 600 : 400,
-    color: mainTab === t ? "var(--color-text-primary)" : "var(--color-text-secondary)",
-    borderBottom: mainTab === t ? "2px solid var(--color-text-primary)" : "2px solid transparent",
-    marginBottom: -1, fontFamily: "var(--font-sans)", transition: "all 0.15s",
-  });
+  // Sub-tab state for every track lives here so Start Here can deep-link
+  // straight to a numbered step, not just to the track.
+  const SETTERS = { dsa: setDsaTab, ml: setMlTab, sd: setSdTab, loop: setLoopTab };
+
+  function goTrack(id, section) {
+    setTrack(id);
+    if (section && SETTERS[id]) SETTERS[id](section);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   const focusToggle = (
     <button onClick={() => setGoogleFocus(!googleFocus)} style={{
@@ -109,31 +123,142 @@ export default function App() {
     </button>
   );
 
-  const TABS = [
-    ["identify", "🔍 Identify"],
-    ["decision", "🌳 Decision Tree"],
-    ["learn", "📖 Learn"],
-    ["compare", "📊 Compare"],
-    ["code", "🐍 Python Code"],
-    ["bigo", "⚖️ Big-O & Constraints"],
-    ["google", "🎯 Google Prep"],
-    ["ml", "🤖 AI/ML Domain"],
-    ["sd", "🏗️ System Design"],
-    ["plan", "🗓️ 7-Day Plan"],
-  ];
+  const activeTrack = TRACKS.find(t => t.id === track);
 
   return (
     <div style={{ fontFamily: "var(--font-sans)", paddingBottom: "3rem", maxWidth: 1240, margin: "0 auto" }}>
 
-      {/* Main tabs */}
-      <div style={{ display: "flex", gap: 2, flexWrap: "wrap", borderBottom: "0.5px solid var(--color-border-tertiary)", marginBottom: "1.5rem" }}>
-        {TABS.map(([id, label]) => (
-          <button key={id} style={tabStyle(id)} onClick={() => setMainTab(id)}>{label}</button>
-        ))}
+      {/* ══ TRACK RAIL — top level: which round are you preparing for? ══ */}
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: "1.25rem" }}>
+        {TRACKS.map(t => {
+          const on = track === t.id;
+          return (
+            <button key={t.id} onClick={() => goTrack(t.id)} style={{
+              flex: "1 1 178px", textAlign: "left", cursor: "pointer",
+              padding: "11px 14px", borderRadius: 11, fontFamily: "var(--font-sans)",
+              border: `1.5px solid ${on ? t.accent : "var(--color-border-tertiary)"}`,
+              background: on ? `${t.accent}14` : "var(--color-background-secondary)",
+              transition: "all 0.15s",
+            }}>
+              <div style={{ fontSize: 14, fontWeight: on ? 700 : 600, color: on ? t.accent : "var(--color-text-primary)" }}>
+                {t.icon} {t.label}
+              </div>
+              <div style={{ fontSize: 11.5, color: "var(--color-text-secondary)", lineHeight: 1.4, marginTop: 3 }}>
+                {t.tagline}
+              </div>
+            </button>
+          );
+        })}
       </div>
 
+      {/* ══ TRACK: START HERE ══ */}
+      {track === "start" && (
+        <div>
+          <SectionHead sub={START.blurb}>{START.headline}</SectionHead>
+
+          <div style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", margin: "1.5rem 0 10px" }}>
+            🧭 Where to start, by round
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 10 }}>
+            {START.order.map((o, i) => (
+              <div key={i} style={{ padding: "13px 15px", background: "var(--color-background-secondary)", borderRadius: 10, border: "0.5px solid var(--color-border-tertiary)" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1.45, marginBottom: 5 }}>{o.t}</div>
+                <div style={{ fontSize: 12.5, color: "var(--color-text-secondary)", lineHeight: 1.6 }}>{o.d}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", margin: "2rem 0 10px" }}>
+            🗺️ The four tracks, in full
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {TRACKS.filter(t => t.id !== "start").map(t => {
+              const stages = STAGES_BY_TRACK[t.id] || [];
+              let n = 0;
+              return (
+                <div key={t.id} style={{ borderRadius: 11, border: `1px solid ${t.accent}44`, overflow: "hidden" }}>
+                  <button onClick={() => goTrack(t.id)} style={{
+                    width: "100%", textAlign: "left", cursor: "pointer", border: "none",
+                    padding: "11px 15px", background: `${t.accent}14`, fontFamily: "var(--font-sans)",
+                  }}>
+                    <span style={{ fontSize: 14.5, fontWeight: 700, color: t.accent }}>{t.icon} {t.label}</span>
+                    <span style={{ fontSize: 12.5, color: "var(--color-text-secondary)", marginLeft: 8 }}>
+                      · {stages.reduce((a, s) => a + s.items.length, 0)} sections · open →
+                    </span>
+                  </button>
+                  <div style={{ padding: "11px 15px", display: "flex", flexDirection: "column", gap: 8 }}>
+                    {stages.map((s, si) => (
+                      <div key={s.stage} style={{ display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
+                        <span style={{ minWidth: 128, fontSize: 11.5, fontWeight: 800, color: "var(--color-text-primary)" }}>
+                          {"①②③④⑤⑥"[si]} {s.stage}
+                        </span>
+                        <span style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                          {s.items.map(it => {
+                            n += 1;
+                            return (
+                              <button key={it.id} onClick={() => goTrack(t.id, it.id)} style={{
+                                fontSize: 12, padding: "3px 11px", borderRadius: 100, cursor: "pointer",
+                                border: "0.5px solid var(--color-border-secondary)", fontFamily: "var(--font-sans)",
+                                background: "var(--color-background-secondary)", color: "var(--color-text-secondary)",
+                              }}>
+                                <strong style={{ color: t.accent }}>{n}</strong> {it.label}
+                              </button>
+                            );
+                          })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", margin: "2rem 0 10px" }}>
+            ⚙️ How to use it
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 10 }}>
+            {START.how.map((h, i) => (
+              <div key={i} style={{ padding: "13px 15px", background: "var(--color-background-secondary)", borderRadius: 10, border: "0.5px solid var(--color-border-tertiary)" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)", marginBottom: 5 }}>{h.icon} {h.t}</div>
+                <div style={{ fontSize: 12.5, color: "var(--color-text-secondary)", lineHeight: 1.6 }}>{h.d}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: "1.5rem", padding: "1rem 1.25rem", background: "#FFF8E1", borderRadius: 10, borderLeft: "3px solid #F9A825" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#B28704", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>Worth knowing up front</div>
+            {START.honesty.map((h, i) => (
+              <div key={i} style={{ fontSize: 13, color: "var(--color-text-primary)", lineHeight: 1.75 }}>• {h}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ══ TRACK HEADER + READING PATH (DSA / Interview Loop) ══ */}
+      {(track === "dsa" || track === "loop") && (
+        <>
+          <div style={{ marginBottom: "1.25rem" }}>
+            <h2 style={{ fontSize: 19, fontWeight: 700, margin: "0 0 6px", color: "var(--color-text-primary)" }}>
+              {activeTrack.icon} {activeTrack.label}
+            </h2>
+            <p style={{ fontSize: 13.5, color: "var(--color-text-secondary)", lineHeight: 1.65, margin: 0 }}>
+              {track === "dsa"
+                ? "Four stages, in order: recognize the pattern from the problem statement, understand how it works, predict its cost, then write it from memory."
+                : "Round-by-round formats and the evaluation rubric, then a day-by-day schedule that sequences the other tracks for you."}
+            </p>
+          </div>
+          <StageNav
+            stages={track === "dsa" ? DSA_STAGES : LOOP_STAGES}
+            tab={track === "dsa" ? dsaTab : loopTab}
+            setTab={track === "dsa" ? setDsaTab : setLoopTab}
+            accent={activeTrack.accent}
+          />
+        </>
+      )}
+
       {/* ══ TAB: IDENTIFY ══ */}
-      {mainTab === "identify" && (
+      {dsa("identify") && (
         <div>
           <SectionHead sub={
             <>Scan the problem statement for these signal phrases — each maps to a specific pattern. Rules marked <GoogleBadge stars={3} compact /> are high-frequency Google territory.</>
@@ -169,7 +294,7 @@ export default function App() {
       )}
 
       {/* ══ TAB: DECISION TREE ══ */}
-      {mainTab === "decision" && (
+      {dsa("decision") && (
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
           <SectionHead sub="Answer these questions about your problem to find the right algorithm.">Algorithm Decision Tree</SectionHead>
 
@@ -223,7 +348,7 @@ export default function App() {
       )}
 
       {/* ══ TAB: LEARN ══ */}
-      {mainTab === "learn" && (() => {
+      {dsa("learn") && (() => {
         const list = googleFocus ? [...ALGOS].sort((a, b) => (b.google?.stars || 0) - (a.google?.stars || 0)) : ALGOS;
         return (
           <div>
@@ -340,7 +465,7 @@ export default function App() {
       })()}
 
       {/* ══ TAB: COMPARE ══ */}
-      {mainTab === "compare" && (() => {
+      {dsa("compare") && (() => {
         const rows = googleFocus ? [...ALGOS].sort((a, b) => (b.google?.stars || 0) - (a.google?.stars || 0)) : ALGOS;
         return (
           <div>
@@ -390,7 +515,7 @@ export default function App() {
       })()}
 
       {/* ══ TAB: CODE ══ */}
-      {mainTab === "code" && (
+      {dsa("code") && (
         <div>
           <SectionHead sub="Copy-paste ready, self-contained implementations. Drill these until you can type them from memory in a plain doc — that's the interview condition.">Python code templates</SectionHead>
 
@@ -441,7 +566,7 @@ export default function App() {
       )}
 
       {/* ══ TAB: BIG-O ══ */}
-      {mainTab === "bigo" && (
+      {dsa("bigo") && (
         <div>
           <SectionHead sub="Two superpowers: reading the intended solution off the constraints, and knowing what Python's built-ins actually cost.">Big-O & constraints</SectionHead>
 
@@ -510,7 +635,7 @@ export default function App() {
       )}
 
       {/* ══ TAB: GOOGLE PREP ══ */}
-      {mainTab === "google" && (
+      {loop("google") && (
         <div>
           <SectionHead sub="Compiled from 250+ candidate reports for SWE III / L4 loops (2024–2026). Everything below is Google-specific.">🎯 Google interview prep</SectionHead>
 
@@ -678,13 +803,13 @@ export default function App() {
       )}
 
       {/* ══ TAB: AI/ML DOMAIN ══ */}
-      {mainTab === "ml" && <MLSection />}
+      {track === "ml" && <MLSection tab={mlTab} setTab={setMlTab} />}
 
       {/* ══ TAB: SYSTEM DESIGN ══ */}
-      {mainTab === "sd" && <SDSection />}
+      {track === "sd" && <SDSection tab={sdTab} setTab={setSdTab} />}
 
       {/* ══ TAB: 7-DAY PLAN ══ */}
-      {mainTab === "plan" && (
+      {loop("plan") && (
         <div>
           <SectionHead sub="One week to the Google loop: 2 DSA rounds + 1 AI/ML round. Daily shape: ~1h concepts here, ~3h problems, 30 min evening recall. Checkboxes save automatically.">🗓️ Your 7-day crash plan</SectionHead>
 
@@ -747,6 +872,16 @@ export default function App() {
             })}
           </div>
         </div>
+      )}
+
+      {/* ══ NEXT-UP FOOTER (DSA / Interview Loop) ══ */}
+      {(track === "dsa" || track === "loop") && (
+        <PathFooter
+          stages={track === "dsa" ? DSA_STAGES : LOOP_STAGES}
+          tab={track === "dsa" ? dsaTab : loopTab}
+          setTab={track === "dsa" ? setDsaTab : setLoopTab}
+          accent={activeTrack.accent}
+        />
       )}
     </div>
   );

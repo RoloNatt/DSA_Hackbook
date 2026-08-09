@@ -8,21 +8,10 @@ import { COMPONENTS, SQL_VS_NOSQL, INDEXING, SHARDING, REPLICATION, CAP, DISTRIB
 import { AI_INTRO, AGENT_ARCH, AI_DESIGN_DECISIONS, INTEGRATION, RELIABILITY } from "../data/sd/aiops.js";
 import { CASE_INTRO, CASES } from "../data/sd/cases.js";
 import { DISCOVERY_INTRO, DISCOVERY_FRAMEWORK, SCOPING_ANSWERS, STAR, STORIES, BEHAVIOURAL_QUESTIONS, YOUR_QUESTIONS } from "../data/sd/discovery.js";
+import { SD_STAGES } from "../data/paths.js";
+import { StageNav, PathFooter } from "./PathNav.jsx";
 
-const BLUE = "#1A73E8";
-
-const SUBTABS = [
-  ["framework", "📐 The Framework"],
-  ["estimate", "🔢 Estimation"],
-  ["blocks", "🧱 Building Blocks"],
-  ["data", "🗄️ Data & Distributed"],
-  ["ai", "🤖 Production AI"],
-  ["integrate", "🔌 Integrations"],
-  ["reliability", "🛡️ Reliability & Ops"],
-  ["cases", "📋 Case Studies"],
-  ["discovery", "🎯 Scoping & Discovery"],
-  ["behavioural", "💬 Behavioural"],
-];
+const BLUE = "#00897B";
 
 function SectionTitle({ children, sub }) {
   return (
@@ -177,8 +166,7 @@ function LatencyScale() {
 
 // ─── MAIN ───────────────────────────────────────────────────────────────────
 
-export default function SDSection() {
-  const [tab, setTab] = useState("framework");
+export default function SDSection({ tab, setTab }) {
   const [activeComp, setActiveComp] = useState("lb");
   const [activeCase, setActiveCase] = useState("support-agent");
 
@@ -198,17 +186,7 @@ export default function SDSection() {
         </p>
       </div>
 
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: "1.4rem" }}>
-        {SUBTABS.map(([id, label]) => (
-          <button key={id} onClick={() => setTab(id)} style={{
-            padding: "7px 13px", borderRadius: 8, cursor: "pointer", fontSize: 12.5,
-            fontFamily: "var(--font-sans)", fontWeight: tab === id ? 600 : 400,
-            border: `1.5px solid ${tab === id ? BLUE : C.border2}`,
-            background: tab === id ? "#E8F0FE" : C.bg,
-            color: tab === id ? BLUE : C.sub, whiteSpace: "nowrap",
-          }}>{label}</button>
-        ))}
-      </div>
+      <StageNav stages={SD_STAGES} tab={tab} setTab={setTab} accent={BLUE} />
 
       {/* ══ FRAMEWORK ══ */}
       {tab === "framework" && (
@@ -632,6 +610,8 @@ export default function SDSection() {
           <Callout tone="warn">{YOUR_QUESTIONS.avoid}</Callout>
         </div>
       )}
+
+      <PathFooter stages={SD_STAGES} tab={tab} setTab={setTab} accent={BLUE} />
     </div>
   );
 }
