@@ -6,6 +6,7 @@ import {
 import * as M from "../../lib/mlmath.js";
 import * as N from "../../lib/nn.js";
 import * as D from "../../lib/datasets.js";
+import { CNN_DEPTH } from "../../data/labDepth.js";
 
 const f2 = (v) => (Number.isFinite(v) ? v.toFixed(2) : "—");
 const f1 = (v) => (Number.isFinite(v) ? v.toFixed(1) : "—");
@@ -57,6 +58,8 @@ export function ConvolutionSim() {
       notice={"Step the stencil along a row and watch the output. Over the flat black background it produces 0. The moment it straddles the edge of a stroke, it spikes. A convolution is a change detector, and the kernel decides which kind of change.\n\nEdit the weights yourself (click + / − on the kernel). Make the left column negative and the right column positive and you have built a vertical-edge detector from scratch. Nobody designed that for you — this is exactly the pattern a CNN learns on its own in its first layer."}
       formalName="2D cross-correlation (what every framework calls convolution)"
       formalNote="Multiply the receptive field elementwise by the kernel and sum. The same weights are reused at every position — that weight sharing is what makes CNNs tractable and translation-equivariant."
+      simple={CNN_DEPTH.simple}
+      deep={CNN_DEPTH.deep}
     >
       <Controls>
         <Choice label="Image" value={imgId} set={(v) => { setImgId(v); setCell(0); }}

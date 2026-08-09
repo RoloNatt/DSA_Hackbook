@@ -7,6 +7,7 @@ import * as M from "../../lib/mlmath.js";
 import * as N from "../../lib/nn.js";
 import * as T from "../../lib/textrec.js";
 import * as D from "../../lib/datasets.js";
+import { RNN_DEPTH } from "../../data/labDepth.js";
 
 const f2 = (v) => (Number.isFinite(v) ? v.toFixed(2) : "—");
 const f3 = (v) => (Number.isFinite(v) ? v.toFixed(3) : "—");
@@ -328,6 +329,8 @@ export function RnnSim() {
       notice={"Set the recurrence weight to 0.3 and step through. The memory of that first 1 is essentially gone by step 4 — the network physically cannot connect step 1 to step 8.\n\nNow set it to 1.1. The memory persists, but it also grows without bound and saturates tanh, so everything blurs together. There is no setting of a single number that both remembers selectively and stays stable. That impossibility is precisely what gates were invented for."}
       formalName="Recurrent Neural Network (Elman network)"
       formalNote="hₜ = tanh(Wₓ xₜ + Wₕ hₜ₋₁ + b). The same weights are applied at every timestep, so the network handles any sequence length — and the same weight gets multiplied in repeatedly, which is where its problems come from."
+      simple={RNN_DEPTH.simple}
+      deep={RNN_DEPTH.deep}
     >
       <Controls>
         <Slider label="Recurrence weight" value={wRec} set={setWRec} min={0.1} max={1.2} step={0.05} fmt={f2} color={P.highlight}

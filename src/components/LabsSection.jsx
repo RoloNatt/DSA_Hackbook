@@ -10,6 +10,7 @@ import { GENAI_SIMS } from "./sims/GenAI.jsx";
 import { RECSYS_SIMS, RL_SIMS } from "./sims/RecsysRL.jsx";
 import { SPEECH_SIMS } from "./sims/Speech.jsx";
 import { APPLIED_SIMS } from "./sims/Applied.jsx";
+import { ARCHITECTURE_SIMS } from "./sims/Architectures.jsx";
 
 // Interactive simulators.
 //
@@ -19,7 +20,8 @@ import { APPLIED_SIMS } from "./sims/Applied.jsx";
 
 const REGISTRY = Object.fromEntries(
   [...CORE_ML_SIMS, ...DEEP_LEARNING_SIMS, ...VISION_SIMS, ...LANGUAGE_SIMS,
-    ...GENAI_SIMS, ...RECSYS_SIMS, ...RL_SIMS, ...SPEECH_SIMS, ...APPLIED_SIMS].map((s) => [s.id, s.Comp])
+    ...GENAI_SIMS, ...RECSYS_SIMS, ...RL_SIMS, ...SPEECH_SIMS, ...APPLIED_SIMS,
+    ...ARCHITECTURE_SIMS].map((s) => [s.id, s.Comp])
 );
 
 export default function LabsSection({ tab, setTab }) {

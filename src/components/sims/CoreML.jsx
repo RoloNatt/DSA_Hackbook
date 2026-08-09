@@ -5,6 +5,7 @@ import {
 } from "../SimKit.jsx";
 import * as M from "../../lib/mlmath.js";
 import * as D from "../../lib/datasets.js";
+import { TREE_DEPTH, SVM_DEPTH } from "../../data/labDepth.js";
 
 const f2 = (v) => (Number.isFinite(v) ? v.toFixed(2) : "—");
 const f3 = (v) => (Number.isFinite(v) ? v.toFixed(3) : "—");
@@ -561,6 +562,8 @@ export function SvmSim() {
       notice={"Drag C down to 0.01: the corridor widens, swallows points, and the model stops caring about individual mistakes. Push C to 1000: the corridor shrinks to squeeze past every point, and it starts contorting to fit noise. C is literally the price of a mistake.\n\nNow switch to the ring dataset with a linear kernel — it fails. Change the kernel to RBF and it separates cleanly, without ever computing coordinates in a higher-dimensional space."}
       formalName="Support Vector Machine (soft margin, solved by SMO)"
       formalNote="Maximizes the margin subject to slack penalized by C. The kernel trick replaces every dot product with a similarity function, giving curved boundaries at linear cost."
+      simple={SVM_DEPTH.simple}
+      deep={SVM_DEPTH.deep}
     >
       <Controls>
         <Choice label="Dataset" value={setId} set={setSetId} options={[{ id: "spam", label: "Spam" }, { id: "loan", label: "Loans" }, { id: "moons", label: "Moons" }, { id: "circles", label: "Ring" }, { id: "xor", label: "XOR" }]} />
@@ -705,6 +708,8 @@ export function DecisionTreeSim() {
       notice={"Look at the boundary: it is made only of horizontal and vertical steps. A tree can never draw a diagonal, because every question is about one feature at a time. On the moons that means a staircase approximating a curve.\n\nPush depth to 8 and accuracy hits 1.00 — but look at the thin slivers carved out around individual points. Each sliver is the tree memorizing one example. That is overfitting you can see."}
       formalName="CART (Classification and Regression Trees)"
       formalNote="Greedily picks the split with the largest impurity decrease, recursing until a stopping rule fires. Needs no feature scaling and handles mixed types, but a single deep tree is high-variance."
+      simple={TREE_DEPTH.simple}
+      deep={TREE_DEPTH.deep}
     >
       <Controls>
         <Choice label="Dataset" value={setId} set={setSetId} options={[{ id: "spam", label: "Spam" }, { id: "moons", label: "Moons" }, { id: "xor", label: "XOR" }, { id: "circles", label: "Ring" }]} />

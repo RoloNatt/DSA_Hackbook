@@ -22,13 +22,15 @@ export const LAB_DOMAINS = [
           { id: "logreg", label: "🎯 Logistic Regression", why: "A straight line that outputs a probability. Switch to the ring dataset to see exactly where linear models hit a wall." },
           { id: "nb", label: "🎲 Naive Bayes", why: "Ask which class better explains the data. Watch two likelihoods get multiplied — the 'naive' step that should not work but does." },
           { id: "knn", label: "📍 K-Nearest Neighbours", why: "No training at all: the closest examples vote. k is a bias-variance dial you can watch turn." },
-          { id: "svm", label: "🛣️ Support Vector Machines", why: "The widest empty corridor between classes, decided by a handful of points. Then the kernel trick makes it curve." },
+          { id: "svm", label: "🛣️ Support Vector Machines", why: "The widest empty corridor between classes, decided by a handful of points. Includes the full two-level explanation: the one-paragraph version and the dual, KKT conditions, C and gamma in depth." },
+          { id: "kernel", label: "🌀 The Kernel Trick", why: "Watch a ring of points lift into a bowl where a flat plane separates them — then see the SVM get the same answer without ever computing that third coordinate." },
         ],
       },
       {
         stage: "Ask questions instead", hint: "Trees, and why one is never enough",
         items: [
-          { id: "tree", label: "🌳 Decision Trees", why: "One yes/no question at a time. Every boundary is a step — a tree literally cannot draw a diagonal." },
+          { id: "tree", label: "🌳 Decision Trees", why: "One yes/no question at a time. Every boundary is a step — a tree literally cannot draw a diagonal. Includes the in-depth pass on impurity, pruning and importance bias." },
+          { id: "treecriteria", label: "🔍 How a Tree Picks Its Question", why: "Every candidate threshold the tree actually evaluated, with its real gain. Gini vs entropy side by side, and the zero-gain rule that decides whether XOR works." },
           { id: "forest", label: "🌲 Random Forests", why: "One jagged boundary versus many averaged. Step through the individual trees to see why disagreement is useful." },
           { id: "boost", label: "🚀 Gradient Boosting", why: "Trees in sequence, each trained only on what the previous ones got wrong. Watch the residual bars flatten — that IS the algorithm." },
         ],
@@ -91,6 +93,12 @@ export const LAB_DOMAINS = [
           { id: "motion", label: "🎬 Motion in Video", why: "Subtract consecutive frames. Static pixels cancel to zero; only movement survives. Raise the speed until it breaks." },
         ],
       },
+      {
+        stage: "The whole architecture", hint: "How the pieces compose",
+        items: [
+          { id: "cnnstack", label: "🏗️ A CNN End to End", why: "Follow one digit through conv, ReLU, pool, conv, pool, flatten. Watch the receptive field grow 1 → 3 → 4 → 8 → 10 using only 3×3 kernels. Includes the full in-depth pass on receptive fields, residuals and transfer learning." },
+        ],
+      },
     ],
   },
 
@@ -109,8 +117,9 @@ export const LAB_DOMAINS = [
       {
         stage: "Sequences", hint: "Memory, and its limit",
         items: [
-          { id: "rnn", label: "🔁 Recurrent Networks", why: "A signal arrives at step 1. Watch the memory of it fade, and find the weight where it neither vanishes nor saturates." },
+          { id: "rnn", label: "🔁 Recurrent Networks", why: "A signal arrives at step 1. Watch the memory of it fade, and find the weight where it neither vanishes nor saturates. Includes the two-level explanation through to LSTM, GRU and why transformers won." },
           { id: "bptt", label: "⏳ Why RNNs Forget", why: "Multiply by the same number 40 times. The usable memory range becomes a number you can read off, not a vague limitation." },
+          { id: "lstm", label: "🚪 LSTM Gates", why: "Three sigmoid switches deciding what to keep, write and reveal. Close the forget gate and you have built a worse RNN; open it and memory survives all eight steps against the RNN's collapse." },
         ],
       },
       {

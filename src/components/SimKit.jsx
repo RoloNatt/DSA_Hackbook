@@ -47,7 +47,7 @@ export const CLASS_COLORS = [P.class0, P.class1];
 
 export function Sim({
   n, title, hook, question, children, readout, formalName, formalNote,
-  notice, breadcrumb, height,
+  notice, breadcrumb, height, simple, deep,
 }) {
   if (!hook) throw new Error(`Sim "${title}" is missing its real-world hook (beat 2).`);
   if (!readout) throw new Error(`Sim "${title}" is missing its result readout (beat 4).`);
@@ -113,6 +113,106 @@ export function Sim({
           <span style={{ fontSize: 13, fontWeight: 700, color: P.derived }}>{formalName}</span>
           {formalNote && <div style={{ fontSize: 12.5, color: P.dim, lineHeight: 1.65, marginTop: 5 }}>{formalNote}</div>}
         </div>
+      )}
+
+      {/* Two-level explanation. The simple version is always visible; the depth
+          is one click away, so neither audience is served at the other's cost. */}
+      {(simple || deep) && <Depth simple={simple} deep={deep} />}
+    </div>
+  );
+}
+
+// ─── TWO-LEVEL EXPLANATION ──────────────────────────────────────────────────
+
+export function Depth({ simple, deep }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderTop: `1px solid ${P.grid}` }}>
+      {simple && (
+        <div style={{ padding: "13px 18px", background: "rgba(61, 217, 196, 0.06)" }}>
+          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: P.predict, marginBottom: 6 }}>
+            The whole idea in one paragraph
+          </div>
+          <div style={{ fontSize: 13.5, color: P.text, lineHeight: 1.72 }}>{simple}</div>
+        </div>
+      )}
+
+      {deep?.length > 0 && (
+        <>
+          <button onClick={() => setOpen(!open)} style={{
+            width: "100%", textAlign: "left", padding: "11px 18px", cursor: "pointer",
+            border: "none", borderTop: `1px solid ${P.grid}`,
+            background: open ? P.panel : "transparent", fontFamily: "var(--font-sans)",
+            display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10,
+          }}>
+            <span style={{ fontSize: 12.5, fontWeight: 700, color: P.derived }}>
+              {open ? "▾" : "▸"} Go deeper — {deep.length} sections
+            </span>
+            <span style={{ fontSize: 11, color: P.faint }}>
+              {open ? "collapse" : "the maths, the assumptions, the follow-ups they ask"}
+            </span>
+          </button>
+
+          {open && (
+            <div style={{ padding: "4px 18px 16px" }}>
+              {deep.map((s, i) => (
+                <div key={i} style={{ marginTop: 14 }}>
+                  <div style={{ fontSize: 13.5, fontWeight: 700, color: P.derived, marginBottom: 5 }}>
+                    {s.h}
+                  </div>
+                  <div style={{ fontSize: 13, color: P.text, lineHeight: 1.75, whiteSpace: "pre-line" }}>{s.body}</div>
+                  {s.math && (
+                    <div style={{
+                      marginTop: 8, padding: "10px 13px", background: P.panel, borderRadius: 8,
+                      border: `1px solid ${P.grid}`, fontFamily: "Consolas, monospace",
+                      fontSize: 12.5, color: P.text, lineHeight: 1.85, whiteSpace: "pre-line", overflowX: "auto",
+                    }}>{s.math}</div>
+                  )}
+                  {s.table && (
+                    <div style={{ overflowX: "auto", marginTop: 8 }}>
+                      <table style={{ borderCollapse: "collapse", fontSize: 12, width: "100%" }}>
+                        <thead>
+                          <tr>
+                            {s.table.headers.map((h) => (
+                              <th key={h} style={{
+                                padding: "6px 9px", textAlign: "left", color: P.dim, fontSize: 10.5,
+                                fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em",
+                                borderBottom: `1px solid ${P.grid}`, whiteSpace: "nowrap",
+                              }}>{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {s.table.rows.map((r, ri) => (
+                            <tr key={ri} style={{ background: ri % 2 ? P.panel : "transparent" }}>
+                              {r.map((c, ci) => (
+                                <td key={ci} style={{
+                                  padding: "6px 9px", color: ci === 0 ? P.text : P.dim, lineHeight: 1.55,
+                                  fontWeight: ci === 0 ? 600 : 400, verticalAlign: "top",
+                                }}>{c}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  {s.ask && (
+                    <div style={{
+                      marginTop: 8, padding: "9px 12px", borderRadius: 8,
+                      background: "rgba(255, 201, 60, 0.08)", borderLeft: `3px solid ${P.highlight}`,
+                    }}>
+                      <div style={{ fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: P.highlight, marginBottom: 4 }}>
+                        If you answer well, this is what comes next
+                      </div>
+                      <div style={{ fontSize: 12.5, color: P.text, lineHeight: 1.7, whiteSpace: "pre-line" }}>{s.ask}</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
