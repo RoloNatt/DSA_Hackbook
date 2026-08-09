@@ -94,6 +94,10 @@ const close = (a, b, t = 1e-6) => Math.abs(a - b) < t;
   const gapHigh = S.melToHz(2000) - S.melToHz(1900);
   ok("equal mel steps widen in Hz (log-like pitch)", gapHigh > gapLow * 3,
     `mel 400→500 spans ${gapLow.toFixed(0)} Hz; mel 1900→2000 spans ${gapHigh.toFixed(0)} Hz`);
+  // Pinned because these exact figures are quoted in the Mel Scale lab's copy.
+  ok("mel gap figures match the numbers quoted in the lab", close(gapLow, 92.6, 0.1) && close(gapHigh, 350.6, 0.1)
+    && close(gapHigh / gapLow, 3.78, 0.01),
+    `${gapLow.toFixed(1)} Hz / ${gapHigh.toFixed(1)} Hz = ${(gapHigh / gapLow).toFixed(2)}×`);
   ok("1000 Hz ≈ 1000 mel by construction", Math.abs(S.hzToMel(1000) - 1000) < 40, S.hzToMel(1000).toFixed(1));
 }
 

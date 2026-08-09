@@ -2,7 +2,7 @@
 
 A comprehensive, interactive study reference for technical interviews — covering **DSA rounds**, an **AI/ML domain round**, and **system design**.
 
-23 DSA patterns · a curated set of most-asked problems tagged by pattern · a full AI/ML domain curriculum with interactive labs · 7 specialization tracks · a system design curriculum with worked case studies · 130+ interview questions · structured study plans.
+23 DSA patterns · **51 interactive simulators** running real algorithms in your browser · a full AI/ML domain curriculum · 7 specialization tracks · a system design curriculum with worked case studies · 130+ interview questions · 313 tested numerical assertions · structured study plans.
 
 **🚀 Live:** [https://rolonatt.github.io/DSA_Hackbook/](https://rolonatt.github.io/DSA_Hackbook/)
 
@@ -15,6 +15,7 @@ Content is grouped into **five tracks**, one per kind of round. Each track lays 
 | 🏁 **Start Here** | — | Orientation: which track to open, and the order inside it |
 | 🧩 **DSA** | Recognize → Understand → Cost it → Write it | 6 |
 | 🤖 **AI/ML** | Orient → Fundamentals → Algorithms → Specialize → Practice | 11 |
+| 🔬 **Interactive Labs** | 9 domains, each with its own ordered path | **51 simulators** |
 | 🏗️ **System Design** | Method → Toolkit → AI systems → Rehearse → The conversation | 10 |
 | 🎯 **Interview Loop** | The target → The schedule | 2 |
 
@@ -103,6 +104,34 @@ supervised/unsupervised · bias-variance · overfitting · "practical and theory
 **10. 💻 ML Coding** — 14 NumPy/PyTorch implementations: softmax + cross-entropy, logistic regression, 2-layer NN forward+backward, k-means, scaled dot-product attention, metrics from scratch, ROC/AUC, IoU + NMS, cosine top-k, NDCG, the bias-variance demo, leakage-safe pipelines, and a **conv shape calculator**.
 
 **11. ❓ Question Bank** — 130+ questions filterable by section and difficulty, in flashcard mode. Plus **depth probes** that show what the interviewer is *really* testing and the follow-up that comes next.
+
+---
+
+## 🔬 Interactive Labs track
+
+**51 simulators across 9 domains.** Every one computes its numbers from real implementations in `src/lib` — a real SMO solver, real gradient descent, real convolution arithmetic, a real DFT, real Q-learning. Move a control and every number, diagram and graph recomputes together. Nothing is illustrative.
+
+Each lab follows the same five beats: **plain title → concrete real-world hook (variables named in English, never x and y) → the mechanism built up one piece at a time → an explicit numeric result stated in words → the formal term named last.** That structure is enforced by the `Sim` component contract, which refuses to render a lab that has no hook or no result readout.
+
+| Domain | Labs | What you can do |
+|---|---|---|
+| 📈 **Core ML** | 11 | Drag a regression line and watch the error trace a real parabola; run gradient descent until it diverges; watch a decision tree fail XOR at depth 1 and solve it at depth 2; see exactly which points are an SVM's support vectors; step k-means and get a different answer from a different seed |
+| 🧠 **Deep Learning** | 6 | Train a real MLP in-browser with its weights drawn as they change; prove a linear-activation network cannot beat 0.50 on XOR at any depth; step through backprop with every number on screen; watch sigmoid shrink the gradient 0.24× per layer |
+| 👁️ **Computer Vision** | 6 | Edit convolution kernel weights and see every multiply-and-add; compute output shapes and parameter counts; shift an image one pixel and compare input change against pooled change; drag detection boxes to see IoU and NMS |
+| 💬 **NLP** | 7 | Watch BPE learn merges one at a time; compute king − man + woman; watch RNN memory fade step by step; resolve what "it" refers to with attention, then turn off √d scaling and watch the softmax saturate |
+| ✨ **Generative AI** | 5 | See which candidates top-k keeps that top-p correctly cuts; push KV-cache memory past the GPU; shrink RAG chunks until retrieval quietly fails; truncated-SVD LoRA; step the diffusion noise schedule |
+| 🎯 **Recommenders** | 3 | Edit a ratings matrix and watch similarity and predictions move; train matrix factorization and read the latent taste factors; reorder search results and see which metrics notice |
+| 🎮 **Reinforcement Learning** | 3 | Watch Q-learning find the optimal route with no map, then set the step cost to zero and watch exploration collapse; compare four bandit strategies' regret; six reward-hacking cases |
+| 🎙️ **Speech & Audio** | 4 | Real DFT spectrograms with the time/frequency trade as a live number; the mel scale's uneven spacing; sample a tone too slowly and watch it come back as a different pitch; CTC alignment collapsing |
+| 🔧 **Applied ML** | 6 | Watch held-out error turn back up while training error keeps falling; get five different scores from five folds; find the cost-minimizing threshold on 5%-fraud data; six leakage cases; twelve months of silent drift |
+
+**All the maths is tested.** `src/lib/__tests__/*.test.mjs` holds **313 assertions**, each pinned to a value derived independently of the code — a hand-computed convex-hull distance for the SVM margin, central differences for backprop, published formant frequencies for the vowel synthesizer. Run them with plain `node`, no framework:
+
+```bash
+node src/lib/__tests__/mlmath.test.mjs
+```
+
+Three bugs were caught only because the tests compared against independently-derived answers: CART stopping on zero-gain splits (making XOR unsolvable, contradicting scikit-learn), a sub-gradient SVM landing 6% off the max-margin solution and highlighting 1 support vector where there are 3, and an autocorrelation pitch estimate coming out an octave low.
 
 ---
 
@@ -199,7 +228,9 @@ The open-ended round: you're handed a vague problem and scored on how you turn i
 - **localStorage** — persists 7-day plan progress and the ML self-test
 - **Navigation as data** — `src/data/paths.js` is the single source of truth for tracks, stages, section order, and the "why read this" line for each step; `src/components/PathNav.jsx` renders it
 - **Modular data** — `src/data/*.js` (DSA), `src/data/ml/*.js` (ML curriculum), `src/data/sd/*.js` (system design)
-- **Custom SVG widgets** — `src/components/MLWidgets.jsx`, no charting library
+- **Custom SVG widgets** — `src/components/MLWidgets.jsx` and `src/components/SimKit.jsx`, no charting library
+- **Verified numeric core** — `src/lib/{mlmath,nn,signal,textrec,rl}.js`: dependency-free implementations with all randomness from a seeded mulberry32, so every displayed number is reproducible. 313 assertions in `src/lib/__tests__/`
+- **Simulator contract** — `Sim()` in SimKit throws if a lab lacks a real-world hook or an explicit result readout, so the teaching structure cannot silently drift
 
 ## Quick Start
 

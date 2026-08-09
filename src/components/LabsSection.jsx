@@ -6,6 +6,10 @@ import { CORE_ML_SIMS } from "./sims/CoreML.jsx";
 import { DEEP_LEARNING_SIMS } from "./sims/DeepLearning.jsx";
 import { VISION_SIMS } from "./sims/Vision.jsx";
 import { LANGUAGE_SIMS } from "./sims/Language.jsx";
+import { GENAI_SIMS } from "./sims/GenAI.jsx";
+import { RECSYS_SIMS, RL_SIMS } from "./sims/RecsysRL.jsx";
+import { SPEECH_SIMS } from "./sims/Speech.jsx";
+import { APPLIED_SIMS } from "./sims/Applied.jsx";
 
 // Interactive simulators.
 //
@@ -14,7 +18,8 @@ import { LANGUAGE_SIMS } from "./sims/Language.jsx";
 // the teaching spec's pacing rule is a hard budget per concept.
 
 const REGISTRY = Object.fromEntries(
-  [...CORE_ML_SIMS, ...DEEP_LEARNING_SIMS, ...VISION_SIMS, ...LANGUAGE_SIMS].map((s) => [s.id, s.Comp])
+  [...CORE_ML_SIMS, ...DEEP_LEARNING_SIMS, ...VISION_SIMS, ...LANGUAGE_SIMS,
+    ...GENAI_SIMS, ...RECSYS_SIMS, ...RL_SIMS, ...SPEECH_SIMS, ...APPLIED_SIMS].map((s) => [s.id, s.Comp])
 );
 
 export default function LabsSection({ tab, setTab }) {

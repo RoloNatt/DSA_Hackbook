@@ -122,6 +122,122 @@ export const LAB_DOMAINS = [
       },
     ],
   },
+
+  {
+    id: "genai", label: "Generative AI", icon: "✨", accent: "#F4511E",
+    blurb: "What actually happens when a model generates text or images — and the numbers that decide what it costs to run.",
+    stages: [
+      {
+        stage: "Generating text", hint: "Choosing tokens, and paying for context",
+        items: [
+          { id: "decoding", label: "🎲 Picking the Next Word", why: "Ten candidate words with real probabilities. Watch top-k force in nonsense that top-p correctly cuts off." },
+          { id: "kvcache", label: "🗃️ The KV Cache", why: "Why long context costs memory rather than compute. Push the batch size up and watch the cache outgrow the GPU." },
+        ],
+      },
+      {
+        stage: "Grounding and adapting", hint: "Facts it never learned, tasks it never saw",
+        items: [
+          { id: "rag", label: "📚 RAG", why: "Chunk, retrieve, answer. Shrink the chunk size until the answer splits across a boundary and retrieval quietly fails." },
+          { id: "lora", label: "🧩 LoRA", why: "A real truncated SVD showing how rank 2 captures most of a weight update at a fraction of the parameters." },
+        ],
+      },
+      {
+        stage: "Generating images", hint: "Destruction is easy; learn to reverse it",
+        items: [
+          { id: "diffusion", label: "🌫️ Diffusion", why: "Add noise step by step until the image is gone. The forward equation is exact, which is where the free training signal comes from." },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "recsys", label: "Recommenders", icon: "🎯", accent: "#5E35B1",
+    blurb: "Five people, four films, and some blanks. Every recommender is a way of guessing the blanks — then a way of ordering what it guessed.",
+    stages: [
+      {
+        stage: "Filling the blanks", hint: "Two approaches to the same matrix",
+        items: [
+          { id: "cf", label: "👥 Collaborative Filtering", why: "Find people with similar taste and borrow their opinion. Edit the ratings and watch the similarity matrix and the prediction both move." },
+          { id: "mf", label: "🔢 Matrix Factorization", why: "Invent hidden taste dimensions and learn them. Nobody labels them — they emerge from the ratings alone." },
+        ],
+      },
+      {
+        stage: "Ordering the results", hint: "The metric is a product decision",
+        items: [
+          { id: "ranking", label: "📊 Ranking Metrics", why: "Reorder eight search results and watch which metrics notice. Precision@k ignores order entirely; NDCG does not." },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "rl", label: "Reinforcement Learning", icon: "🎮", accent: "#00838F",
+    blurb: "A process concept, so these are built as experiences rather than equations: watch an agent stumble, learn, and then get gamed by its own reward function.",
+    stages: [
+      {
+        stage: "Learning from reward", hint: "No map, no instructions",
+        items: [
+          { id: "qlearn", label: "🗺️ Q-Learning", why: "An agent with no map, learning purely by stumbling into a goal. Set the step cost to zero and watch exploration collapse entirely." },
+          { id: "bandit", label: "🎰 Explore vs Exploit", why: "Four strategies on the same slot machines. Pure greedy commits on one lucky sample and never reconsiders." },
+        ],
+      },
+      {
+        stage: "Where it goes wrong", hint: "Agents optimize what you measure",
+        items: [
+          { id: "reward", label: "⚠️ Reward Design", why: "Real cases where the agent maximized the reward perfectly and did entirely the wrong thing — including the RLHF flattery problem." },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "speech", label: "Speech & Audio", icon: "🎙️", accent: "#C2185B",
+    blurb: "Real DFTs on synthesized speech. The spectrogram you see is computed from the waveform above it, and every slider recomputes the transform.",
+    stages: [
+      {
+        stage: "Seeing sound", hint: "Time, frequency, and the trade between them",
+        items: [
+          { id: "spectrogram", label: "📈 Waveform to Spectrogram", why: "Drag the window length and watch sharp timing trade against sharp frequency. You cannot have both — that is the uncertainty principle, not a bug." },
+          { id: "mel", label: "👂 The Mel Scale", why: "Why frequency bands are spaced unevenly: the same 100-mel step spans 93 Hz down at 400 mel but 351 Hz up at 1900 — a 3.8× difference." },
+          { id: "aliasing", label: "⚡ Aliasing & Nyquist", why: "Sample a tone too slowly and it returns as a different, lower tone — permanently indistinguishable from real signal." },
+        ],
+      },
+      {
+        stage: "Recognizing speech", hint: "Frames vastly outnumber letters",
+        items: [
+          { id: "ctc", label: "🔤 CTC Alignment", why: "A hundred audio frames, three letters, and nobody labelled the alignment. See how blanks and collapsing make that solvable." },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "applied", label: "Applied ML", icon: "🔧", accent: "#2E7D32",
+    blurb: "The things that decide whether a model works in production. Almost every real failure lives here rather than in the choice of model.",
+    stages: [
+      {
+        stage: "Will it generalize?", hint: "Fit, validate, trust",
+        items: [
+          { id: "overfit", label: "📉 Overfitting", why: "Training error only ever falls; held-out error turns back up. That turning point answers how complex the model should be." },
+          { id: "crossval", label: "🔄 Cross-Validation", why: "Same model, same data, five different scores. The spread tells you which model comparisons are just noise." },
+        ],
+      },
+      {
+        stage: "Real-world data", hint: "Imbalance and scale",
+        items: [
+          { id: "imbalance", label: "⚖️ Imbalanced Data", why: "95% accuracy from a model that catches no fraud at all. Then set what a miss costs and let the threshold follow." },
+          { id: "scaling", label: "📏 Feature Scaling", why: "Identical settings, one preprocessing line. Watch a stuck optimizer suddenly converge." },
+        ],
+      },
+      {
+        stage: "How you fool yourself", hint: "And what happens after you ship",
+        items: [
+          { id: "leakage", label: "🚨 Data Leakage", why: "Six ways information crosses from test into train, each with the symptom it produces. The reason 0.97 offline becomes 0.61 live." },
+          { id: "drift", label: "📊 Data Drift", why: "The model is frozen but the world moves. Accuracy decays for twelve months and nothing raises an alarm." },
+        ],
+      },
+    ],
+  },
 ];
 
 // Flattened path so the shell can deep-link to any lab by id.
