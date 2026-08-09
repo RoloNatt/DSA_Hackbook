@@ -11,6 +11,7 @@ import { PLAN, PLAN_RULES } from "./src/data/plan.js";
 import { CONSTRAINT_TABLE, PYTHON_COSTS, COMPLEXITY_NOTES } from "./src/data/bigo.js";
 import MLSection from "./src/components/MLSection.jsx";
 import SDSection from "./src/components/SDSection.jsx";
+import LabsSection from "./src/components/LabsSection.jsx";
 import { TRACKS, DSA_STAGES, LOOP_STAGES, STAGES_BY_TRACK, START } from "./src/data/paths.js";
 import { StageNav, PathFooter } from "./src/components/PathNav.jsx";
 
@@ -52,6 +53,7 @@ export default function App() {
   const [dsaTab, setDsaTab] = useState("identify");
   const [mlTab, setMlTab] = useState("playbook");
   const [sdTab, setSdTab] = useState("framework");
+  const [labsTab, setLabsTab] = useState("linreg");
   const [loopTab, setLoopTab] = useState("google");
   const [activeCode, setActiveCode] = useState("hashmap");
   const [activeAlgo, setActiveAlgo] = useState("hashmap");
@@ -103,7 +105,7 @@ export default function App() {
 
   // Sub-tab state for every track lives here so Start Here can deep-link
   // straight to a numbered step, not just to the track.
-  const SETTERS = { dsa: setDsaTab, ml: setMlTab, sd: setSdTab, loop: setLoopTab };
+  const SETTERS = { dsa: setDsaTab, ml: setMlTab, labs: setLabsTab, sd: setSdTab, loop: setLoopTab };
 
   function goTrack(id, section) {
     setTrack(id);
@@ -169,7 +171,7 @@ export default function App() {
           </div>
 
           <div style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", margin: "2rem 0 10px" }}>
-            🗺️ The four tracks, in full
+            🗺️ Every track, in full
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {TRACKS.filter(t => t.id !== "start").map(t => {
@@ -807,6 +809,9 @@ export default function App() {
 
       {/* ══ TAB: SYSTEM DESIGN ══ */}
       {track === "sd" && <SDSection tab={sdTab} setTab={setSdTab} />}
+
+      {/* ══ TRACK: INTERACTIVE LABS ══ */}
+      {track === "labs" && <LabsSection tab={labsTab} setTab={setLabsTab} />}
 
       {/* ══ TAB: 7-DAY PLAN ══ */}
       {loop("plan") && (

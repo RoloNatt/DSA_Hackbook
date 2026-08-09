@@ -11,6 +11,8 @@ export const TRACKS = [
     tagline: "Recognize the pattern, understand it, cost it, write it" },
   { id: "ml", label: "AI/ML", icon: "🤖", accent: "#7C4DFF",
     tagline: "The domain round — fundamentals, algorithms, deep learning" },
+  { id: "labs", label: "Interactive Labs", icon: "🔬", accent: "#E91E8C",
+    tagline: "Run the models yourself — turn the knobs, watch everything move" },
   { id: "sd", label: "System Design", icon: "🏗️", accent: "#00897B",
     tagline: "Turn a vague problem into a defensible architecture" },
   { id: "loop", label: "Interview Loop", icon: "🎯", accent: "#E8710A",
@@ -191,9 +193,62 @@ export const LOOP_STAGES = [
   },
 ];
 
+// ─── INTERACTIVE LABS ───────────────────────────────────────────────────────
+// Ordered so each lab reuses the picture the previous one built.
+
+export const LABS_STAGES = [
+  {
+    stage: "Predict a number",
+    hint: "Fit a line, then learn how fitting works",
+    items: [
+      { id: "linreg", label: "📈 Linear Regression",
+        why: "Ten students' revision hours against their exam scores. Drag the line and watch the error rise and fall — this is the picture every later model reuses." },
+      { id: "gd", label: "⛰️ Gradient Descent",
+        why: "The same line, but found by small repeated downhill steps instead of a formula. Turn the learning rate up until it diverges — that is the failure you will meet everywhere else." },
+    ],
+  },
+  {
+    stage: "Predict a class",
+    hint: "Four different answers to the same question",
+    items: [
+      { id: "logreg", label: "🎯 Logistic Regression",
+        why: "A straight line that outputs a probability. Switch to the ring dataset to see exactly where linear models hit a wall." },
+      { id: "nb", label: "🎲 Naive Bayes",
+        why: "Instead of a boundary, ask which class better explains the data. Watch two feature likelihoods get multiplied — the 'naive' step that should not work but does." },
+      { id: "knn", label: "📍 K-Nearest Neighbours",
+        why: "No training at all: just ask the closest examples to vote. k is a bias-variance dial you can watch turn from memorizing to over-smoothing." },
+      { id: "svm", label: "🛣️ Support Vector Machines",
+        why: "The widest empty corridor between the classes, decided by only a handful of points. Then the kernel trick makes it curve." },
+    ],
+  },
+  {
+    stage: "Ask questions instead",
+    hint: "Trees, and why one is never enough",
+    items: [
+      { id: "tree", label: "🌳 Decision Trees",
+        why: "One yes/no question at a time. Every boundary is a horizontal or vertical step — a tree literally cannot draw a diagonal." },
+      { id: "forest", label: "🌲 Random Forests",
+        why: "Compare one tree's jagged boundary against many averaged. Step through the individual trees to see why disagreement is useful." },
+      { id: "boost", label: "🚀 Gradient Boosting",
+        why: "Trees built in sequence, each trained only on what the previous ones got wrong. Watch the residual bars flatten — that IS the algorithm." },
+    ],
+  },
+  {
+    stage: "No labels at all",
+    hint: "Find structure nobody told you about",
+    items: [
+      { id: "kmeans", label: "🎪 K-Means Clustering",
+        why: "Assign, move, repeat. Change the random seed and get a different answer from the same data — the local-optimum problem, made visible." },
+      { id: "pca", label: "📐 Principal Component Analysis",
+        why: "Squash two numbers into one and see how much survives. Spread-kept and error-lost peak at the same angle, which is the whole idea." },
+    ],
+  },
+];
+
 export const STAGES_BY_TRACK = {
   dsa: DSA_STAGES,
   ml: ML_STAGES,
+  labs: LABS_STAGES,
   sd: SD_STAGES,
   loop: LOOP_STAGES,
 };
