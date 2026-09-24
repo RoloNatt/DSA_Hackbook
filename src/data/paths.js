@@ -47,7 +47,7 @@ export const DSA_STAGES = [
     hint: "Predict complexity before coding",
     items: [
       { id: "bigo", label: "⚖️ Big-O & Constraints",
-        why: "What time and space complexity mean, an 8-step procedure for working them out from any code, ten worked examples, a live doubling test that measures 16 algorithms, the constraints-to-algorithm table, Python's hidden costs, and a 14-question quiz." },
+        why: "Time and space complexity, concrete before formal: real Python examples, 56 bare pseudocode shapes with a hide-answers mode, the step-by-step procedure, ten worked examples, a live doubling test, the constraints table, Python's hidden costs, and a quiz." },
     ],
   },
   {

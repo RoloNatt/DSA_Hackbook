@@ -56,7 +56,8 @@ ok("naive fib: recursion depth n", [4, 10, 20].every((n) => run("fibnaive", n).s
 ok("memo fib: exactly 2n − 1 calls (cache hits counted, as lru_cache does)",
   [16, 256, 2048].every((n) => run("fibmemo", n).ops === 2 * n - 1),
   [16, 256, 2048].map((n) => `fib(${n})→${run("fibmemo", n).ops}`).join(" "));
-ok("memo fib: space = (n−1) cached + n deep = 2n − 1", [16, 2048].every((n) => run("fibmemo", n).space === 2 * n - 1));
+ok("memo fib: TRUE simultaneous peak is n — the cache fills as the stack unwinds",
+  [16, 256, 2048].every((n) => run("fibmemo", n).space === n), [16, 256, 2048].map((n) => `n=${n}→${run("fibmemo", n).space}`).join(" "));
 ok("fib(30) naive vs memo: 2,692,537 calls vs 59",
   run("fibnaive", 30).ops === 2692537 && run("fibmemo", 30).ops === 59,
   `${run("fibnaive", 30).ops.toLocaleString()} vs ${run("fibmemo", 30).ops}`);

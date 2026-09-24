@@ -2,6 +2,7 @@ import { useState } from "react";
 import { C, Table, Callout } from "./MLWidgets.jsx";
 import { StageNav } from "./PathNav.jsx";
 import { ComplexityLab } from "./sims/Complexity.jsx";
+import { TimeByExample, SpaceByExample, TimeShapes, SpaceShapes } from "./ComplexityExamples.jsx";
 import { CONSTRAINT_TABLE, PYTHON_COSTS, COMPLEXITY_NOTES } from "../data/bigo.js";
 import {
   INTRO, TIME_METHOD, TIME_RULES, SPACE_METHOD, SPACE_RULES, WORKED, QUIZ, SAY_IT,
@@ -20,21 +21,30 @@ export const COMPLEXITY_STAGES = [
     ],
   },
   {
-    stage: "Work it out", hint: "The procedure, then practice reading real code",
+    stage: "Time", hint: "Code first, then the bare shapes, then the rules",
     items: [
-      { id: "time", label: "⏱️ Working out TIME", why: "An 8-step procedure you can follow on any code, plus a lookup table from code shapes to complexities." },
-      { id: "space", label: "🧠 Working out SPACE", why: "Count what you allocate — including the recursion stack, which is the part everyone forgets." },
-      { id: "worked", label: "📝 Worked examples", why: "Ten real functions annotated line by line and derived step by step — including three traps: the amortized sliding window, the hidden slice in Word Break, and pseudo-polynomial coin change." },
+      { id: "timeEx", label: "⏱️ Time, by example", why: "Real Python, one rule at a time: one loop, sequential loops, nested loops, constant inner loops, halving, hidden costs, the amortized trap, and recursion." },
+      { id: "timeShapes", label: "🔁 Time: loop shapes", why: "Just the loop shape — `for i in n: for j in range(i, m)` — and the answer. 38 cards with a hide-answers mode, each showing its real step count." },
+      { id: "time", label: "📋 Time: the procedure", why: "The 8 steps to follow on any code you've never seen, plus a code-shape lookup table." },
     ],
   },
   {
-    stage: "See it measured", hint: "Stop guessing — count",
+    stage: "Space", hint: "Same order: code, shapes, rules",
     items: [
+      { id: "spaceEx", label: "🧠 Space, by example", why: "Real Python: variables, sets, 2D tables and the rolling-row trick, recursion depth, copies — then the time-for-space trade-off and a summary of both." },
+      { id: "spaceShapes", label: "🗂️ Space: shapes", why: "18 bare shapes for memory. The recursion ones are where people slip: count calls open at once, not calls in total." },
+      { id: "space", label: "📋 Space: the procedure", why: "What counts, what doesn't, and Python's ~1,000-frame recursion limit." },
+    ],
+  },
+  {
+    stage: "Real code", hint: "Apply it, then measure it",
+    items: [
+      { id: "worked", label: "📝 Worked examples", why: "Ten real functions annotated line by line and derived step by step — including the hidden slice in Word Break and pseudo-polynomial coin change." },
       { id: "lab", label: "🔬 The doubling test", why: "Run 16 algorithms at n, 2n, 4n … and watch the work ratio reveal the class. Compare a set against a list, a window against pairs, a balanced tree against a skewed one." },
     ],
   },
   {
-    stage: "Use it in the interview", hint: "Read the constraints; know the hidden costs",
+    stage: "In the interview", hint: "Read the constraints; know the hidden costs",
     items: [
       { id: "constraints", label: "🕵️ Constraints → algorithm", why: "Read n first and work backwards: the input limit tells you which complexity — and so which family of algorithms — the setter intended." },
       { id: "costs", label: "🐍 Python's hidden costs", why: "The lines that look O(1) but aren't, and the exact phrases to say out loud when you state a complexity." },
@@ -367,7 +377,8 @@ function Quiz() {
 }
 
 const RENDER = {
-  meaning: Meaning, time: Time, space: Space, worked: Worked,
+  meaning: Meaning, timeEx: TimeByExample, timeShapes: TimeShapes, time: Time,
+  spaceEx: SpaceByExample, spaceShapes: SpaceShapes, space: Space, worked: Worked,
   lab: ComplexityLab, constraints: Constraints, costs: Costs, quiz: Quiz,
 };
 
@@ -389,7 +400,7 @@ export default function ComplexitySection() {
         </p>
       </div>
       <StageNav stages={COMPLEXITY_STAGES} tab={tab} setTab={setTab} accent={ACCENT}
-        title="Inside Big-O — 8 short sections, in this order" />
+        title={`Inside Big-O — ${FLAT.length} short sections, in this order`} />
       <Comp />
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: "2rem" }}>
         {prev && (

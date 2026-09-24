@@ -293,18 +293,21 @@ def fib(n):                 # ← counted per call
       // A real memoized recursion. Cache hits still count as calls, exactly as
       // they do with lru_cache: the wrapper runs, the body does not.
       const memo = new Map();
-      let ops = 0, depth = 0, maxDepth = 0;
+      let ops = 0, depth = 0, peak = 0;
+      // Peak = frames open + values cached AT THE SAME MOMENT. The cache fills
+      // as the stack unwinds, so the two never both reach n: the peak is n.
+      const note = () => { peak = Math.max(peak, depth + memo.size); };
       const fib = (k) => {
-        ops++; depth++; maxDepth = Math.max(maxDepth, depth);
+        ops++; depth++; note();
         let v;
         if (k < 2) v = k;
         else if (memo.has(k)) v = memo.get(k);
-        else { v = (fib(k - 1) + fib(k - 2)) % 1e9; memo.set(k, v); }
+        else { v = (fib(k - 1) + fib(k - 2)) % 1e9; memo.set(k, v); note(); }
         depth--;
         return v;
       };
       fib(n);
-      return { ops, space: memo.size + maxDepth };
+      return { ops, space: peak };
     },
   },
   {
@@ -389,6 +392,7 @@ export function measure(algo, ns = algo.ns) {
 export const CLASSES = [
   { id: "1", label: "O(1)", f: () => 1 },
   { id: "logn", label: "O(log n)", f: (n) => Math.log2(Math.max(2, n)) },
+  { id: "sqrt", label: "O(√n)", f: (n) => Math.sqrt(n) },
   { id: "n", label: "O(n)", f: (n) => n },
   { id: "nlogn", label: "O(n log n)", f: (n) => n * Math.log2(Math.max(2, n)) },
   { id: "n2", label: "O(n²)", f: (n) => n * n },
@@ -424,7 +428,9 @@ export function fitClass(points, key = "ops") {
 
   if (isExp) {
     return {
-      id: "2n", label: "O(2ⁿ)", exponential: true, base,
+      // Anything growing slower than 2.5ⁿ is quoted as O(2ⁿ) (e.g. Fibonacci's
+      // φⁿ); steeper growth is labelled by its measured base.
+      id: "exp", label: base < 2.5 ? "O(2ⁿ)" : `O(${Math.round(base)}ⁿ)`, exponential: true, base,
       baseLabel: `≈ ${base.toFixed(3)}ⁿ`,
       logLogSlope: polyFit.slope,
       scores: [],
