@@ -2,7 +2,7 @@
 
 A comprehensive, interactive study reference for technical interviews — covering **DSA rounds**, an **AI/ML domain round**, and **system design**.
 
-23 DSA patterns · **55 interactive simulators** running real algorithms in your browser · a full AI/ML domain curriculum · 7 specialization tracks · a system design curriculum with worked case studies · 130+ interview questions · 333 tested numerical assertions · structured study plans.
+23 DSA patterns · **55 interactive simulators** running real algorithms in your browser · a full AI/ML domain curriculum · 7 specialization tracks · a system design curriculum with worked case studies · 130+ interview questions · 431 tested numerical assertions · structured study plans.
 
 **🚀 Live:** [https://rolonatt.github.io/DSA_Hackbook/](https://rolonatt.github.io/DSA_Hackbook/)
 
@@ -47,14 +47,19 @@ Each includes: **analogy** (intuitive story), **step-by-step** (how it works), *
 
 ### ③ Cost it
 
-**5. ⚖️ Big-O & Constraints**
-- **Constraint → Complexity** table: read n from the problem, know the intended complexity
-- **Python built-in costs**: what `list.insert(0)`, `x in list`, `sorted()`, etc. actually cost
-- **Interview phrases**: log₂(1M) ≈ 20, amortized O(1), average-case hashing
+**5. ⚖️ Big-O & Constraints** — time and space complexity as its own 8-section path:
+- **What Big-O means** — one concrete story (finding duplicate phone numbers two ways), the growth ladder at n = 100,000, and worst/average/amortized explained
+- **Working out TIME** — an 8-step procedure that works on any code, plus a code-shape → complexity table (nested loops, halving, amortized pointers, recursion, memoization, graphs, heaps)
+- **Working out SPACE** — what counts, why recursion depth is space, copies and slices, and Python's ~1,000-frame recursion limit
+- **Worked examples** — ten functions annotated line by line and derived step by step, including three traps: the amortized sliding window (O(n) despite nesting), the hidden slice in Word Break (O(n³), not O(n²)), and pseudo-polynomial coin change
+- **The doubling test** — an interactive lab that runs 16 instrumented algorithms at n, 2n, 4n … and recovers each Big-O class from the measured work ratio. Side-by-side comparisons: set vs list, sliding window vs all pairs, naive vs memoized Fibonacci, balanced vs skewed tree (space)
+- **Constraints → complexity** table: read n from the problem, know the intended complexity
+- **Python built-in costs**: what `list.insert(0)`, `x in list`, `sorted()`, etc. actually cost, plus the phrases to say out loud
+- **Practice quiz** — 14 snippets, pick the time and space before revealing; score saved in your browser
 
 ### ④ Write it
 
-**6. 🐍 Python Code** — 26 self-contained, copy-paste-ready implementations organized by category:
+**6. 🐍 Python Code** — 25 self-contained, copy-paste-ready implementations, **each with time and space complexity per function and the reason why** (also embedded as a comment header, so it comes with you when you copy). Organized by category:
 - Arrays: HashMap, Two Pointers, Sliding Window, Prefix Sum, Intervals
 - Stack & Heap: Stack, Monotonic Stack, Heap/Top-K
 - Linked Lists: Reversal, Fast/Slow runners, Merge
@@ -127,7 +132,7 @@ Each lab follows the same five beats: **plain title → concrete real-world hook
 | 🎙️ **Speech & Audio** | 4 | Real DFT spectrograms with the time/frequency trade as a live number; the mel scale's uneven spacing; sample a tone too slowly and watch it come back as a different pitch; CTC alignment collapsing |
 | 🔧 **Applied ML** | 6 | Watch held-out error turn back up while training error keeps falling; get five different scores from five folds; find the cost-minimizing threshold on 5%-fraud data; six leakage cases; twelve months of silent drift |
 
-**All the maths is tested.** `src/lib/__tests__/*.test.mjs` holds **333 assertions**, each pinned to a value derived independently of the code — a hand-computed convex-hull distance for the SVM margin, central differences for backprop, published formant frequencies for the vowel synthesizer. Run them with plain `node`, no framework:
+**All the maths is tested.** `src/lib/__tests__/*.test.mjs` holds **431 assertions**, each pinned to a value derived independently of the code — a hand-computed convex-hull distance for the SVM margin, central differences for backprop, published formant frequencies for the vowel synthesizer. Run them with plain `node`, no framework:
 
 ```bash
 node src/lib/__tests__/mlmath.test.mjs

@@ -47,7 +47,7 @@ export const DSA_STAGES = [
     hint: "Predict complexity before coding",
     items: [
       { id: "bigo", label: "⚖️ Big-O & Constraints",
-        why: "Read the intended solution off the input constraints, and know what each Python built-in really costs. Do this before you write code, out loud." },
+        why: "What time and space complexity mean, an 8-step procedure for working them out from any code, ten worked examples, a live doubling test that measures 16 algorithms, the constraints-to-algorithm table, Python's hidden costs, and a 14-question quiz." },
     ],
   },
   {

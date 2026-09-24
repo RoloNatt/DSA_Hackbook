@@ -8,10 +8,11 @@ import {
   GOOGLE_STYLE, GOOGLE_PROTOCOL, GOOGLE_PROBLEMS, ML_DOMAIN,
 } from "./src/data/google.js";
 import { PLAN, PLAN_RULES } from "./src/data/plan.js";
-import { CONSTRAINT_TABLE, PYTHON_COSTS, COMPLEXITY_NOTES } from "./src/data/bigo.js";
 import MLSection from "./src/components/MLSection.jsx";
 import SDSection from "./src/components/SDSection.jsx";
 import LabsSection from "./src/components/LabsSection.jsx";
+import ComplexitySection from "./src/components/ComplexitySection.jsx";
+import { SNIPPET_COMPLEXITY, complexityHeader } from "./src/data/snippetComplexity.js";
 import { TRACKS, DSA_STAGES, LOOP_STAGES, STAGES_BY_TRACK, START } from "./src/data/paths.js";
 import { StageNav, PathFooter } from "./src/components/PathNav.jsx";
 
@@ -552,14 +553,44 @@ export default function App() {
                     </div>
                   </div>
                   <button
-                    onClick={() => navigator.clipboard.writeText(s.code)}
+                    onClick={() => navigator.clipboard.writeText(complexityHeader(s.id) + s.code)}
                     style={{ padding: "7px 14px", borderRadius: 7, border: `1.5px solid ${s.color}`, background: "transparent", color: s.color, cursor: "pointer", fontSize: 12, fontWeight: 600, fontFamily: "var(--font-sans)", transition: "all 0.15s", whiteSpace: "nowrap" }}
                     onMouseEnter={e => { e.target.style.background = s.color; e.target.style.color = "white"; }}
                     onMouseLeave={e => { e.target.style.background = "transparent"; e.target.style.color = s.color; }}
                   >📋 Copy</button>
                 </div>
+                {SNIPPET_COMPLEXITY[s.id] && (
+                  <div style={{ padding: "12px 18px", background: "var(--color-background-primary)", borderBottom: `1px solid ${s.color}22`, overflowX: "auto" }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-secondary)", marginBottom: 6 }}>
+                      ⏱️ Time & space complexity — and why
+                    </div>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5 }}>
+                      <thead>
+                        <tr>
+                          {["Function", "Time", "Space", "Why"].map(h => (
+                            <th key={h} style={{ padding: "6px 10px", textAlign: "left", fontSize: 10.5, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--color-text-secondary)", borderBottom: "0.5px solid var(--color-border-tertiary)", whiteSpace: "nowrap" }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {SNIPPET_COMPLEXITY[s.id].map((r, i) => (
+                          <tr key={i} style={{ borderBottom: "0.5px solid var(--color-border-tertiary)" }}>
+                            <td style={{ padding: "7px 10px", fontFamily: "Consolas, monospace", fontWeight: 600, color: "var(--color-text-primary)", whiteSpace: "nowrap", verticalAlign: "top" }}>{r.fn}</td>
+                            <td style={{ padding: "7px 10px", fontFamily: "Consolas, monospace", fontWeight: 700, color: s.color, whiteSpace: "nowrap", verticalAlign: "top" }}>{r.time}</td>
+                            <td style={{ padding: "7px 10px", fontFamily: "Consolas, monospace", fontWeight: 700, color: "#7C4DFF", whiteSpace: "nowrap", verticalAlign: "top" }}>{r.space}</td>
+                            <td style={{ padding: "7px 10px", color: "var(--color-text-secondary)", lineHeight: 1.55, minWidth: 260 }}>{r.why}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div style={{ fontSize: 11.5, color: "var(--color-text-secondary)", marginTop: 6 }}>
+                      Space is extra memory, excluding the input. The same summary is in the code below as a comment, so it comes with you when you copy.
+                      {" "}New to this? <button onClick={() => goTrack("dsa", "bigo")} style={{ border: "none", background: "none", padding: 0, color: GOOGLE_BLUE, cursor: "pointer", fontSize: 11.5, fontFamily: "var(--font-sans)", textDecoration: "underline" }}>How to work it out →</button>
+                    </div>
+                  </div>
+                )}
                 <div style={{ background: "#1e1e2e", padding: "1.25rem 1.5rem", overflowX: "auto", margin: 0 }}>
-                  <pre style={{ margin: 0, fontFamily: "'Fira Code', 'Cascadia Code', 'Consolas', monospace", fontSize: 13, lineHeight: 1.75, color: "#cdd6f4", whiteSpace: "pre" }}>{s.code}</pre>
+                  <pre style={{ margin: 0, fontFamily: "'Fira Code', 'Cascadia Code', 'Consolas', monospace", fontSize: 13, lineHeight: 1.75, color: "#cdd6f4", whiteSpace: "pre" }}><span style={{ color: "#7f849c" }}>{complexityHeader(s.id)}</span>{s.code}</pre>
                 </div>
               </div>
             );
@@ -568,73 +599,7 @@ export default function App() {
       )}
 
       {/* ══ TAB: BIG-O ══ */}
-      {dsa("bigo") && (
-        <div>
-          <SectionHead sub="Two superpowers: reading the intended solution off the constraints, and knowing what Python's built-ins actually cost.">Big-O & constraints</SectionHead>
-
-          <div style={{ marginBottom: "2rem" }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: "var(--color-text-primary)", marginBottom: 4 }}>🕵️ Constraints tell you the answer</div>
-            <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
-              A computer does ~10⁸ simple operations per second. The problem setter chose n so the intended solution fits — so read n FIRST and work backwards to the algorithm.
-            </p>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                <thead>
-                  <tr style={{ background: "var(--color-background-secondary)" }}>
-                    {["Constraint", "Intended complexity", "Meaning", "Typical algorithms"].map(h => (
-                      <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-text-secondary)", borderBottom: "0.5px solid var(--color-border-tertiary)", whiteSpace: "nowrap" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {CONSTRAINT_TABLE.map((r, i) => (
-                    <tr key={i} style={{ borderBottom: "0.5px solid var(--color-border-tertiary)", background: i % 2 === 0 ? "transparent" : "var(--color-background-secondary)" }}>
-                      <td style={{ padding: "10px 12px", fontFamily: "Consolas, monospace", fontWeight: 600, color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>{r.n}</td>
-                      <td style={{ padding: "10px 12px", fontFamily: "Consolas, monospace", fontWeight: 700, color: "#C62828", whiteSpace: "nowrap" }}>{r.target}</td>
-                      <td style={{ padding: "10px 12px", color: "var(--color-text-secondary)" }}>{r.hint}</td>
-                      <td style={{ padding: "10px 12px", color: "var(--color-text-primary)" }}>{r.algos}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: "2rem" }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: "var(--color-text-primary)", marginBottom: 4 }}>🐍 What Python built-ins cost</div>
-            <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: "0 0 12px", lineHeight: 1.6 }}>
-              Google interviewers ask "what's the complexity of that line?" — these are the answers.
-            </p>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                <thead>
-                  <tr style={{ background: "var(--color-background-secondary)" }}>
-                    {["Operation", "Cost", "Watch out"].map(h => (
-                      <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-text-secondary)", borderBottom: "0.5px solid var(--color-border-tertiary)", whiteSpace: "nowrap" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {PYTHON_COSTS.map((r, i) => (
-                    <tr key={i} style={{ borderBottom: "0.5px solid var(--color-border-tertiary)", background: i % 2 === 0 ? "transparent" : "var(--color-background-secondary)" }}>
-                      <td style={{ padding: "9px 12px", fontFamily: "Consolas, monospace", fontSize: 12.5, color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>{r.op}</td>
-                      <td style={{ padding: "9px 12px", fontFamily: "Consolas, monospace", fontWeight: 700, color: r.cost.includes("O(n)") || r.cost.includes("O(j") || r.cost.includes("O(len") ? "#C62828" : "#0F7A5A", whiteSpace: "nowrap" }}>{r.cost}</td>
-                      <td style={{ padding: "9px 12px", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>{r.note}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div style={{ padding: "1.25rem", background: "var(--color-background-secondary)", borderRadius: 10, border: "0.5px solid var(--color-border-tertiary)" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-primary)", marginBottom: 10 }}>💬 Things to say out loud in the interview</div>
-            {COMPLEXITY_NOTES.map((n, i) => (
-              <div key={i} style={{ fontSize: 13, color: "var(--color-text-secondary)", lineHeight: 1.8 }}>• {n}</div>
-            ))}
-          </div>
-        </div>
-      )}
+      {dsa("bigo") && <ComplexitySection />}
 
       {/* ══ TAB: GOOGLE PREP ══ */}
       {loop("google") && (

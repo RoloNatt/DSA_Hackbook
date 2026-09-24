@@ -15,7 +15,7 @@ export function flatten(stages) {
 // ─── STAGE NAV ──────────────────────────────────────────────────────────────
 // stages: [{ stage, hint, items: [{ id, label, why }] }]
 
-export function StageNav({ stages, tab, setTab, accent = BLUE }) {
+export function StageNav({ stages, tab, setTab, accent = BLUE, title = "Reading path — follow it in order, or jump to what you need" }) {
   const flat = flatten(stages);
   const pos = flat.findIndex((i) => i.id === tab);
   const current = flat[pos];
@@ -31,7 +31,7 @@ export function StageNav({ stages, tab, setTab, accent = BLUE }) {
         flexWrap: "wrap", padding: "9px 14px", borderBottom: `0.5px solid ${C.border}`,
       }}>
         <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: C.sub }}>
-          Reading path — follow it in order, or jump to what you need
+          {title}
         </div>
         {current && (
           <div style={{ fontSize: 11.5, fontWeight: 700, color: accent, whiteSpace: "nowrap" }}>
@@ -42,7 +42,7 @@ export function StageNav({ stages, tab, setTab, accent = BLUE }) {
 
       {stages.map((s, si) => (
         <div key={s.stage} style={{
-          display: "grid", gridTemplateColumns: "minmax(120px, 158px) 1fr", gap: 12,
+          display: "grid", gridTemplateColumns: "minmax(90px, min(158px, 28%)) minmax(0, 1fr)", gap: 12,
           padding: "10px 14px",
           borderTop: si === 0 ? "none" : `0.5px dashed ${C.border}`,
           alignItems: "start",
@@ -66,7 +66,7 @@ export function StageNav({ stages, tab, setTab, accent = BLUE }) {
                   fontSize: 12.5, fontFamily: "var(--font-sans)", fontWeight: on ? 700 : 400,
                   border: `1.5px solid ${on ? accent : C.border2}`,
                   background: on ? "#E8F0FE" : "var(--color-background-primary)",
-                  color: on ? accent : C.sub, whiteSpace: "nowrap", transition: "all 0.13s",
+                  color: on ? accent : C.sub, whiteSpace: "normal", textAlign: "left", maxWidth: "100%", transition: "all 0.13s",
                 }}>
                   <span style={{
                     width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
